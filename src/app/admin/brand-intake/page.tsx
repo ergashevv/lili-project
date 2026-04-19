@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import prisma from '@/lib/prisma'
+import { listRecentBrandIntakes } from '@/lib/brand-intake-store'
 import { BrandIntakeForm } from './BrandIntakeForm'
 import styles from './BrandIntakePage.module.css'
 
@@ -9,34 +9,31 @@ export const metadata: Metadata = {
 }
 
 export default async function BrandIntakePage() {
-  const submissions = await prisma.brandIntake.findMany({
-    orderBy: { createdAt: 'desc' },
-    take: 5,
-  })
+  const submissions = await listRecentBrandIntakes(5)
 
   return (
     <div className={styles.page}>
       <section className={styles.hero}>
         <div className={styles.eyebrow}>Brand Intake</div>
-        <h1 className={styles.title}>Client Brand Onboarding</h1>
+        <h1 className={styles.title}>Collect the client brief before design starts</h1>
         <p className={styles.subtitle}>
-          Use this page to collect the key information needed to turn the project
-          into a fully customized personal brand website. Every submission is
-          stored in the database.
+          Use this page to collect the exact answers the website needs for
+          design, copy, SEO, and launch. Every submission is saved in the
+          database and appears in the dashboard.
         </p>
 
         <div className={styles.heroGrid}>
           <div className={styles.heroCard}>
             <strong>Fast setup</strong>
-            <span>Gather the essentials in one place.</span>
+            <span>Gather the essentials in one clean form.</span>
           </div>
           <div className={styles.heroCard}>
             <strong>Structured data</strong>
-            <span>Top fields are saved cleanly, extra details go into JSON.</span>
+            <span>Core fields save cleanly and extras stay in JSON.</span>
           </div>
           <div className={styles.heroCard}>
-            <strong>Easy follow-up</strong>
-            <span>Review recent submissions directly on this page.</span>
+            <strong>Recent briefs</strong>
+            <span>Review the latest submissions on this page.</span>
           </div>
         </div>
       </section>
@@ -46,29 +43,29 @@ export default async function BrandIntakePage() {
 
         <aside className={styles.sidePanel}>
           <div className={styles.panelCard}>
-            <h3>What to collect</h3>
+            <h3>What this captures</h3>
             <p>
-              This form helps you gather the information needed for design,
-              content, SEO, and launch planning before we build the final site.
+              This form gathers the information needed for design, content, SEO,
+              and launch planning before the site is built.
             </p>
             <ul className={styles.bulletList}>
               <li>
                 <span className={styles.bulletDot} />
-                Brand identity, tone of voice, and audience details
+                Brand identity, voice, and audience details
               </li>
               <li>
                 <span className={styles.bulletDot} />
-                Visual direction, colors, typography, and references
+                Visual direction, colors, fonts, and references
               </li>
               <li>
                 <span className={styles.bulletDot} />
-                Homepage copy, required pages, and launch notes
+                Homepage copy, pages, social links, and launch notes
               </li>
             </ul>
           </div>
 
           <div className={styles.summaryCard}>
-            <h3>Recent submissions</h3>
+            <h3>Latest briefs</h3>
             {submissions.length > 0 ? (
               <div className={styles.submissionList}>
                 {submissions.map((submission) => (
@@ -83,8 +80,8 @@ export default async function BrandIntakePage() {
               </div>
             ) : (
               <p className={styles.emptyState}>
-                No brand intake submissions yet. The latest entries will appear
-                here after the first save.
+                No briefs yet. The latest entries will appear here after the
+                first save.
               </p>
             )}
           </div>

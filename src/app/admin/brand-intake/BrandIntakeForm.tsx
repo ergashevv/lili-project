@@ -3,96 +3,121 @@
 import React from 'react'
 import { useRouter } from 'next/navigation'
 import { saveBrandIntake } from '@/app/actions/brand-intake'
+import {
+  BRAND_INTAKE_DEFAULTS,
+  createBrandIntakeDraft,
+  validateBrandIntakeField,
+  validateBrandIntakeForm,
+} from '@/lib/brand-intake-validation'
 import styles from './BrandIntakePage.module.css'
+
+type FieldType = 'text' | 'email' | 'date' | 'color'
 
 type Field = {
   name: string
   label: string
-  siteArea: string
+  description: string
+  helper?: string
   placeholder?: string
   required?: boolean
-  type?: 'text' | 'email' | 'url' | 'date'
+  type?: FieldType
   kind?: 'input' | 'textarea'
   rows?: number
 }
 
-const sections: Array<{ title: string; description: string; fields: Field[] }> = [
+type Section = {
+  id: string
+  number: string
+  title: string
+  summary: string
+  fields: Field[]
+}
+
+const sections: Section[] = [
   {
-    title: 'Brand Basics',
-    description: 'Who is this brand, and who should we contact?',
+    id: 'brand-basics',
+    number: '01',
+    title: 'Brand basics',
+    summary: 'Who the brand is and how we can reach the right person.',
     fields: [
       {
         name: 'brandName',
         label: 'Brand name',
-        siteArea: 'Header logo, browser title, and footer identity',
+        description: 'Header logo, browser title, and footer identity',
         required: true,
         placeholder: 'Lili',
+        helper: 'Use the name customers should remember first.',
       },
       {
         name: 'companyName',
         label: 'Company / legal name',
-        siteArea: 'Footer legal text, invoices, and company records',
+        description: 'Footer legal text, invoices, and company records',
         placeholder: 'Optional',
       },
       {
         name: 'contactName',
         label: 'Contact person',
-        siteArea: 'Admin contact and project ownership',
+        description: 'Project ownership and admin follow-up',
         required: true,
         placeholder: 'Full name',
       },
       {
         name: 'email',
         label: 'Email address',
-        siteArea: 'Contact section, reply inbox, and admin notifications',
+        description: 'Reply inbox, contact area, and admin notifications',
         type: 'email',
         required: true,
         placeholder: 'name@example.com',
+        helper: 'Use a real email address. We will reply here.',
       },
       {
         name: 'phone',
         label: 'Phone / WhatsApp',
-        siteArea: 'Header contact strip, footer, and quick support CTA',
+        description: 'Header contact strip, footer, and quick support',
         placeholder: '+998 90 000 00 00',
+        helper: 'Optional, but useful for quick contact.',
       },
       {
         name: 'website',
-        label: 'Website / domain',
-        siteArea: 'Footer, SEO metadata, and trust signals',
-        type: 'url',
-        placeholder: 'https://example.com',
+        label: 'Website domain',
+        description: 'Footer, SEO metadata, and trust signals',
+        type: 'text',
+        placeholder: 'lili.uz',
+        helper: 'Just type the domain. No https:// is needed.',
       },
     ],
   },
   {
-    title: 'Brand Direction',
-    description: 'Explain the brand story and the feeling it should create.',
+    id: 'brand-story',
+    number: '02',
+    title: 'Brand story',
+    summary: 'What the brand stands for and how it should sound.',
     fields: [
       {
         name: 'industry',
-        label: 'Industry / niche',
-        siteArea: 'Homepage positioning, SEO copy, and section headlines',
+        label: 'Industry / business type',
+        description: 'Homepage positioning, SEO copy, and section headlines',
         required: true,
         placeholder: 'Fashion, beauty, lifestyle...',
       },
       {
         name: 'tagline',
-        label: 'Tagline / slogan',
-        siteArea: 'Hero subheading, social banners, and brand lockups',
-        placeholder: 'Short brand line',
+        label: 'Short slogan',
+        description: 'Hero subheading, social banners, and brand lockups',
+        placeholder: 'A short brand line',
       },
       {
         name: 'mission',
-        label: 'Mission',
-        siteArea: 'About page mission block and brand story section',
+        label: 'Brand story',
+        description: 'About page, intro copy, and mission section',
         placeholder: 'Why does this brand exist?',
         kind: 'textarea',
         rows: 4,
       },
       {
         name: 'vision',
-        label: 'Vision',
-        siteArea: 'About page future vision block and long-term strategy',
+        label: 'Brand vision',
+        description: 'About page future vision and long-term direction',
         placeholder: 'What is the long-term goal?',
         kind: 'textarea',
         rows: 4,
@@ -100,7 +125,7 @@ const sections: Array<{ title: string; description: string; fields: Field[] }> =
       {
         name: 'values',
         label: 'Core values',
-        siteArea: 'Trust section, brand story, and tone guide',
+        description: 'Trust section, brand story, and tone guide',
         placeholder: 'Luxury, trust, quality, speed...',
         kind: 'textarea',
         rows: 4,
@@ -108,15 +133,15 @@ const sections: Array<{ title: string; description: string; fields: Field[] }> =
       {
         name: 'brandPersonality',
         label: 'Brand personality',
-        siteArea: 'Site-wide copy style and visual mood',
+        description: 'Site-wide copy style and visual mood',
         placeholder: 'Minimal, bold, elegant, warm...',
         kind: 'textarea',
         rows: 4,
       },
       {
         name: 'preferredTone',
-        label: 'Tone of voice',
-        siteArea: 'Buttons, banners, descriptions, and customer messages',
+        label: 'Writing style',
+        description: 'Buttons, banners, descriptions, and customer messages',
         placeholder: 'Formal, friendly, premium, playful...',
         kind: 'textarea',
         rows: 4,
@@ -124,13 +149,15 @@ const sections: Array<{ title: string; description: string; fields: Field[] }> =
     ],
   },
   {
+    id: 'audience',
+    number: '03',
     title: 'Audience',
-    description: 'Tell us who the website is for.',
+    summary: 'Who the site is for and what they need from it.',
     fields: [
       {
         name: 'primaryAudience',
-        label: 'Primary audience',
-        siteArea: 'Hero messaging, page targeting, and conversion copy',
+        label: 'Who the site is for',
+        description: 'Hero messaging, page targeting, and conversion copy',
         required: true,
         placeholder: 'Who are the customers?',
         kind: 'textarea',
@@ -138,16 +165,16 @@ const sections: Array<{ title: string; description: string; fields: Field[] }> =
       },
       {
         name: 'customerGoals',
-        label: 'Customer goals',
-        siteArea: 'Benefit sections, call-to-action copy, and offers',
+        label: 'What they want',
+        description: 'Benefit sections, call-to-action copy, and offers',
         placeholder: 'What are they trying to achieve?',
         kind: 'textarea',
         rows: 4,
       },
       {
         name: 'customerPainPoints',
-        label: 'Customer pain points',
-        siteArea: 'FAQ, objection handling, and persuasive messaging',
+        label: 'What they struggle with',
+        description: 'FAQ, objection handling, and persuasive messaging',
         placeholder: 'What problems should the site solve?',
         kind: 'textarea',
         rows: 4,
@@ -155,49 +182,54 @@ const sections: Array<{ title: string; description: string; fields: Field[] }> =
       {
         name: 'country',
         label: 'Country / region',
-        siteArea: 'Footer, contact area, and launch planning',
+        description: 'Footer, contact area, and launch planning',
         placeholder: 'Uzbekistan, Tashkent...',
       },
       {
         name: 'city',
         label: 'City',
-        siteArea: 'Contact details and local trust signals',
+        description: 'Contact details and local trust signals',
         placeholder: 'Tashkent',
       },
       {
         name: 'launchDate',
-        label: 'Target launch date',
-        siteArea: 'Project timeline and rollout planning',
+        label: 'Launch date',
+        description: 'Project timeline and rollout planning',
         type: 'date',
       },
     ],
   },
   {
-    title: 'Visual Identity',
-    description: 'Share the look and feel you want the site to communicate.',
+    id: 'visual-identity',
+    number: '04',
+    title: 'Visual identity',
+    summary: 'How the website should look, feel, and photograph.',
     fields: [
       {
         name: 'primaryColor',
-        label: 'Primary color',
-        siteArea: 'Buttons, links, highlights, and brand accents',
-        placeholder: '#800020',
+        label: 'Main color',
+        description: 'Buttons, links, highlights, and brand accents',
+        type: 'color',
+        helper: 'Pick the main brand color visually.',
       },
       {
         name: 'secondaryColor',
-        label: 'Secondary color',
-        siteArea: 'Secondary accents, cards, and supporting blocks',
-        placeholder: '#d4af37',
+        label: 'Support color',
+        description: 'Secondary accents, cards, and supporting blocks',
+        type: 'color',
+        helper: 'This color supports the main color in smaller areas.',
       },
       {
         name: 'accentColor',
         label: 'Accent color',
-        siteArea: 'Badges, emphasis points, and small highlights',
-        placeholder: '#ffffff',
+        description: 'Badges, emphasis points, and small highlights',
+        type: 'color',
+        helper: 'Use this for small details and emphasis only.',
       },
       {
         name: 'typography',
-        label: 'Typography preferences',
-        siteArea: 'Headings, body text, and editorial hierarchy',
+        label: 'Font direction',
+        description: 'Headings, body text, and editorial hierarchy',
         placeholder: 'Serif, modern, editorial...',
         kind: 'textarea',
         rows: 4,
@@ -205,7 +237,7 @@ const sections: Array<{ title: string; description: string; fields: Field[] }> =
       {
         name: 'photographyStyle',
         label: 'Photography style',
-        siteArea: 'Hero banners, product images, and campaign visuals',
+        description: 'Hero banners, product images, and campaign visuals',
         placeholder: 'Studio, lifestyle, luxury, minimal...',
         kind: 'textarea',
         rows: 4,
@@ -213,7 +245,7 @@ const sections: Array<{ title: string; description: string; fields: Field[] }> =
       {
         name: 'referenceWebsites',
         label: 'Reference websites',
-        siteArea: 'Design reference and layout inspiration',
+        description: 'Design reference and layout inspiration',
         placeholder: 'Paste links to brands you like',
         kind: 'textarea',
         rows: 4,
@@ -221,37 +253,41 @@ const sections: Array<{ title: string; description: string; fields: Field[] }> =
     ],
   },
   {
-    title: 'Website Content',
-    description: 'What should the homepage and main pages include?',
+    id: 'website-content',
+    number: '05',
+    title: 'Website content',
+    summary: 'Which pages and homepage messages should be included.',
     fields: [
       {
         name: 'requiredPages',
-        label: 'Required pages',
-        siteArea: 'Navigation menu, sitemap, and footer links',
+        label: 'Pages to include',
+        description: 'Navigation menu, sitemap, and footer links',
+        required: true,
         placeholder: 'About, Products, FAQ, Contact...',
         kind: 'textarea',
         rows: 4,
       },
       {
         name: 'heroTitle',
-        label: 'Homepage hero title',
-        siteArea: 'Homepage hero heading',
+        label: 'Homepage headline',
+        description: 'Homepage hero heading',
+        required: true,
         placeholder: 'Main hero heading',
         kind: 'textarea',
         rows: 4,
       },
       {
         name: 'heroSubtitle',
-        label: 'Homepage hero subtitle',
-        siteArea: 'Homepage hero subheading and intro paragraph',
+        label: 'Homepage intro text',
+        description: 'Homepage hero subheading and intro paragraph',
         placeholder: 'Short supporting text',
         kind: 'textarea',
         rows: 4,
       },
       {
         name: 'keyFeatures',
-        label: 'Key features / trust points',
-        siteArea: 'Trust section, feature cards, and conversion blocks',
+        label: 'Key selling points',
+        description: 'Trust section, feature cards, and conversion blocks',
         placeholder: 'Delivery, quality, support...',
         kind: 'textarea',
         rows: 4,
@@ -259,15 +295,15 @@ const sections: Array<{ title: string; description: string; fields: Field[] }> =
       {
         name: 'socialLinks',
         label: 'Social links',
-        siteArea: 'Footer, contact bar, and social proof area',
+        description: 'Footer, contact bar, and social proof area',
         placeholder: 'Instagram, Telegram, TikTok...',
         kind: 'textarea',
         rows: 4,
       },
       {
         name: 'notes',
-        label: 'Additional notes',
-        siteArea: 'Internal notes for the build team',
+        label: 'Extra notes',
+        description: 'Internal notes for the build team',
         placeholder: 'Anything else we should know?',
         kind: 'textarea',
         rows: 4,
@@ -275,6 +311,35 @@ const sections: Array<{ title: string; description: string; fields: Field[] }> =
     ],
   },
 ]
+
+const requiredFieldNames = [
+  'brandName',
+  'contactName',
+  'email',
+  'industry',
+  'primaryAudience',
+  'heroTitle',
+  'requiredPages',
+] as const
+
+const previewFallbackPages = ['Home', 'About', 'Shop', 'FAQ', 'Contact']
+const previewFallbackSocial = ['Instagram', 'Telegram', 'TikTok']
+const previewFallbackFeatures = ['Quality', 'Delivery', 'Support']
+
+function splitList(value: string) {
+  return value
+    .split(/\r?\n|,|;/)
+    .map((item) => item.trim())
+    .filter(Boolean)
+}
+
+function getDraftValue(draft: Record<string, string>, key: string, fallback = '') {
+  return draft[key]?.trim() || fallback
+}
+
+function joinDescribedBy(...ids: Array<string | undefined>) {
+  return ids.filter(Boolean).join(' ') || undefined
+}
 
 export function BrandIntakeForm(props: BrandIntakeFormViewProps) {
   return <BrandIntakeFormView {...props} />
@@ -297,11 +362,28 @@ function BrandIntakeFormView({
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [status, setStatus] = React.useState<'idle' | 'success' | 'error'>('idle')
   const [message, setMessage] = React.useState('')
-  const [draft, setDraft] = React.useState<Record<string, string>>({})
+  const [submitAttempted, setSubmitAttempted] = React.useState(false)
+  const [draft, setDraft] = React.useState<Record<string, string>>(() => createBrandIntakeDraft())
+  const [touched, setTouched] = React.useState<Record<string, boolean>>({})
+  const [errors, setErrors] = React.useState<Record<string, string>>({})
 
   const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.currentTarget
     setDraft((current) => ({ ...current, [name]: value }))
+    setTouched((current) => ({ ...current, [name]: true }))
+    setErrors((current) => ({
+      ...current,
+      [name]: validateBrandIntakeField(name, value),
+    }))
+  }
+
+  const handleFieldBlur = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.currentTarget
+    setTouched((current) => ({ ...current, [name]: true }))
+    setErrors((current) => ({
+      ...current,
+      [name]: validateBrandIntakeField(name, value),
+    }))
   }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -309,6 +391,25 @@ function BrandIntakeFormView({
     setIsSubmitting(true)
     setStatus('idle')
     setMessage('')
+
+    const validationErrors = validateBrandIntakeForm(draft)
+    setErrors(validationErrors)
+    setTouched(
+      sections.reduce<Record<string, boolean>>((accumulator, section) => {
+        section.fields.forEach((field) => {
+          accumulator[field.name] = true
+        })
+        return accumulator
+      }, {}),
+    )
+    setSubmitAttempted(true)
+
+    if (Object.keys(validationErrors).length > 0) {
+      setStatus('error')
+      setMessage('Please fix the highlighted fields before submitting.')
+      setIsSubmitting(false)
+      return
+    }
 
     const formData = new FormData(event.currentTarget)
 
@@ -320,7 +421,10 @@ function BrandIntakeFormView({
         return
       }
 
-      setDraft({})
+      setDraft(createBrandIntakeDraft())
+      setTouched({})
+      setErrors({})
+      setSubmitAttempted(false)
       router.refresh()
       setStatus('success')
       setMessage(successMessage)
@@ -332,225 +436,365 @@ function BrandIntakeFormView({
     }
   }
 
-  const content = (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      {sections.map((section) => (
-        <section key={section.title} className={styles.card}>
-          <div className={styles.sectionHeader}>
-            <h2>{section.title}</h2>
-            <p>{section.description}</p>
+  const requiredFilled = requiredFieldNames.filter((name) => getDraftValue(draft, name).length > 0).length
+  const completionPercent = Math.round((requiredFilled / requiredFieldNames.length) * 100)
+
+  const brandName = getDraftValue(draft, 'brandName', 'Your brand')
+  const brandInitial = brandName.charAt(0).toUpperCase() || 'L'
+  const domain = getDraftValue(draft, 'website', 'yourdomain.com')
+  const contactName = getDraftValue(draft, 'contactName', 'Contact person')
+  const companyName = getDraftValue(draft, 'companyName', 'Company / legal name')
+  const email = getDraftValue(draft, 'email', 'name@example.com')
+  const phone = getDraftValue(draft, 'phone', '+998 90 000 00 00')
+  const city = getDraftValue(draft, 'city', 'Tashkent')
+  const country = getDraftValue(draft, 'country', 'Uzbekistan')
+  const launchDate = getDraftValue(draft, 'launchDate', 'Not set yet')
+  const industry = getDraftValue(draft, 'industry', 'Fashion, beauty, lifestyle')
+  const heroTitle = getDraftValue(draft, 'heroTitle', 'A clear headline for the homepage')
+  const heroSubtitle = getDraftValue(draft, 'heroSubtitle', 'A short intro that explains the brand in plain words.')
+  const typography = getDraftValue(draft, 'typography', 'Modern, readable, and elegant')
+  const preferredTone = getDraftValue(draft, 'preferredTone', 'Warm and confident')
+  const brandPersonality = getDraftValue(draft, 'brandPersonality', 'Minimal and premium')
+  const photographyStyle = getDraftValue(draft, 'photographyStyle', 'Studio and lifestyle photography')
+  const notes = getDraftValue(draft, 'notes', 'Any extra notes go here.')
+
+  const pages = splitList(draft.requiredPages)
+  const socialLinks = splitList(draft.socialLinks)
+  const keyFeatures = splitList(draft.keyFeatures)
+  const references = splitList(draft.referenceWebsites)
+  const audience = getDraftValue(draft, 'primaryAudience', 'Who the site is for')
+  const customerGoals = getDraftValue(draft, 'customerGoals', 'What they want')
+  const customerPainPoints = getDraftValue(draft, 'customerPainPoints', 'What they struggle with')
+
+  const previewPages = pages.length > 0 ? pages : previewFallbackPages
+  const previewSocialLinks = socialLinks.length > 0 ? socialLinks : previewFallbackSocial
+  const previewFeatures = keyFeatures.length > 0 ? keyFeatures : previewFallbackFeatures
+
+  const renderField = (field: Field) => {
+    const value =
+      draft[field.name] ??
+      (field.type === 'color'
+        ? BRAND_INTAKE_DEFAULTS[field.name as keyof typeof BRAND_INTAKE_DEFAULTS] || '#ffffff'
+        : '')
+    const error = errors[field.name]
+    const isInvalid = Boolean(error) && (touched[field.name] || submitAttempted)
+    const helperId = `${field.name}-helper`
+    const errorId = `${field.name}-error`
+    const describedBy = joinDescribedBy(field.helper ? helperId : undefined, isInvalid ? errorId : undefined)
+
+    return (
+      <article
+        key={field.name}
+        className={`${styles.fieldCard} ${isInvalid ? styles.fieldCardInvalid : ''}`}
+      >
+        <div className={styles.fieldCopy}>
+          <label htmlFor={field.name} className={styles.fieldLabel}>
+            {field.label}
+            {field.required ? ' *' : ''}
+          </label>
+          <p className={styles.fieldDescription}>Appears in: {field.description}</p>
+          {field.helper && (
+            <p id={helperId} className={styles.fieldHelp}>
+              {field.helper}
+            </p>
+          )}
+        </div>
+
+        {field.kind === 'textarea' ? (
+          <textarea
+            id={field.name}
+            name={field.name}
+            rows={field.rows || 4}
+            required={field.required}
+            placeholder={field.placeholder}
+            className={styles.textarea}
+            value={value}
+            onChange={handleFieldChange}
+            onBlur={handleFieldBlur}
+            aria-invalid={isInvalid}
+            aria-describedby={describedBy}
+          />
+        ) : field.type === 'color' ? (
+          <div className={styles.colorPickerRow}>
+            <input
+              id={field.name}
+              name={field.name}
+              type="color"
+              required={field.required}
+              className={styles.colorPickerInput}
+              value={value}
+              onChange={handleFieldChange}
+              onBlur={handleFieldBlur}
+              aria-invalid={isInvalid}
+              aria-describedby={describedBy}
+              aria-label={field.label}
+            />
+            <div className={styles.colorPickerCopy}>
+              <strong>{field.label}</strong>
+              <span>Pick the shade visually. No hex code needed.</span>
+              <div className={styles.colorSwatchLine}>
+                <span className={styles.colorSwatch} style={{ backgroundColor: value }} />
+                <small>This color will shape buttons, highlights, and accents.</small>
+              </div>
+            </div>
           </div>
+        ) : field.type === 'date' ? (
+          <input
+            id={field.name}
+            name={field.name}
+            type="date"
+            required={field.required}
+            className={styles.input}
+            value={value}
+            onChange={handleFieldChange}
+            onBlur={handleFieldBlur}
+            aria-invalid={isInvalid}
+            aria-describedby={describedBy}
+          />
+        ) : (
+          <input
+            id={field.name}
+            name={field.name}
+            type={field.type || 'text'}
+            autoComplete={field.name === 'email' ? 'email' : field.name === 'phone' ? 'tel' : 'off'}
+            required={field.required}
+            placeholder={field.placeholder}
+            className={styles.input}
+            value={value}
+            onChange={handleFieldChange}
+            onBlur={handleFieldBlur}
+            aria-invalid={isInvalid}
+            aria-describedby={describedBy}
+          />
+        )}
 
-          <div className={styles.fieldGrid}>
-            {section.fields.map((field) => {
-              const value = draft[field.name] ?? ''
+        {isInvalid && (
+          <p className={styles.fieldError} id={errorId}>
+            {error}
+          </p>
+        )}
+      </article>
+    )
+  }
 
-              return (
-                <label key={field.name} className={styles.field}>
-                  <div className={styles.fieldMeta}>
-                    <span>
-                      {field.label}
-                      {field.required ? ' *' : ''}
-                    </span>
-                    <small>Used in: {field.siteArea}</small>
-                  </div>
-                  {field.kind === 'textarea' ? (
-                    <textarea
-                      name={field.name}
-                      rows={field.rows || 4}
-                      required={field.required}
-                      placeholder={field.placeholder}
-                      className={styles.textarea}
-                      value={value}
-                      onChange={handleFieldChange}
-                    />
-                  ) : field.type === 'date' ? (
-                    <input
-                      name={field.name}
-                      type="date"
-                      required={field.required}
-                      className={styles.input}
-                      value={value}
-                      onChange={handleFieldChange}
-                    />
-                  ) : (
-                    <input
-                      name={field.name}
-                      type={field.type || 'text'}
-                      required={field.required}
-                      placeholder={field.placeholder}
-                      className={styles.input}
-                      value={value}
-                      onChange={handleFieldChange}
-                    />
-                  )}
-                </label>
-              )
-            })}
-          </div>
-        </section>
-      ))}
-
-      <div className={styles.alertArea}>
-        {status === 'success' && <div className={styles.success}>{message}</div>}
-        {status === 'error' && <div className={styles.error}>{message}</div>}
+  const formContent = (
+    <div className={styles.editorColumn}>
+      <div className={styles.progressStrip} aria-label="Form progress">
+        <div className={styles.progressCard}>
+          <strong>{completionPercent}%</strong>
+          <span>Required fields filled</span>
+        </div>
+        <div className={styles.progressCard}>
+          <strong>{sections.length}</strong>
+          <span>Guided sections</span>
+        </div>
+        <div className={styles.progressCard}>
+          <strong>Live</strong>
+          <span>Preview updates while you type</span>
+        </div>
       </div>
 
-      <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
-        {isSubmitting ? 'Saving...' : submitLabel}
-      </button>
-    </form>
+      <nav className={styles.sectionNav} aria-label="Brand intake sections">
+        {sections.map((section) => (
+          <a key={section.id} href={`#${section.id}`} className={styles.sectionNavItem}>
+            <span>{section.number}</span>
+            <strong>{section.title}</strong>
+            <em>{section.summary}</em>
+          </a>
+        ))}
+      </nav>
+
+      <form className={styles.form} onSubmit={handleSubmit} noValidate>
+        {sections.map((section) => (
+          <section key={section.id} id={section.id} className={styles.sectionPanel}>
+            <div className={styles.sectionPanelHeader}>
+              <div className={styles.sectionBadge}>{section.number}</div>
+              <div className={styles.sectionHeaderCopy}>
+                <h2>{section.title}</h2>
+                <p>{section.summary}</p>
+              </div>
+            </div>
+
+            <div className={styles.fieldStack}>{section.fields.map(renderField)}</div>
+          </section>
+        ))}
+
+        <div className={styles.submitBar}>
+          <div className={styles.submitCopy}>
+            <span>Ready to save</span>
+            <strong>
+              {requiredFilled} of {requiredFieldNames.length} essentials filled
+            </strong>
+            <p>The rest can stay rough. We only need the first version to move forward.</p>
+          </div>
+
+          <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+            {isSubmitting ? 'Saving...' : submitLabel}
+          </button>
+        </div>
+
+        <div className={styles.alertArea}>
+          {status === 'success' && <div className={styles.success}>{message}</div>}
+          {status === 'error' && <div className={styles.error}>{message}</div>}
+        </div>
+      </form>
+    </div>
   )
 
   if (!showPreview) {
-    return content
+    return formContent
   }
 
-  const toList = (value: string) =>
-    value
-      .split(/\r?\n|,|;/)
-      .map((item) => item.trim())
-      .filter(Boolean)
-
-  const text = (key: string, fallback: string) => draft[key]?.trim() || fallback
-  const brandName = text('brandName', 'Brand name')
-  const domain = text('website', 'yourdomain.com')
-  const contactName = text('contactName', 'Contact person')
-  const companyName = text('companyName', 'Legal company name')
-  const email = text('email', 'name@example.com')
-  const phone = text('phone', '+998 90 000 00 00')
-  const city = text('city', 'Tashkent')
-  const country = text('country', 'Uzbekistan')
-  const pages = toList(text('requiredPages', 'About, Shop, FAQ, Contact'))
-  const socialLinks = toList(text('socialLinks', 'Instagram, Telegram, TikTok'))
-  const primaryColor = text('primaryColor', '#800020')
-  const secondaryColor = text('secondaryColor', '#d4af37')
-  const accentColor = text('accentColor', '#f8f1ea')
-  const typography = text('typography', 'Serif headings and clean body text')
-  const photographyStyle = text('photographyStyle', 'Studio and lifestyle photos')
-  const preferredTone = text('preferredTone', 'Warm, premium, and clear')
-  const brandPersonality = text('brandPersonality', 'Elegant and minimal')
-  const audience = text('primaryAudience', 'Women who want premium clothing')
-  const customerGoals = text('customerGoals', 'Look stylish and feel confident')
-  const customerPainPoints = text('customerPainPoints', 'Need help choosing the right look')
-  const heroTitle = text('heroTitle', 'Elegant fashion for confident women')
-  const heroSubtitle = text('heroSubtitle', 'Simple copy that explains the brand in one line.')
-  const keyFeatures = toList(text('keyFeatures', 'Quality, delivery, support'))
-  const notes = text('notes', 'Anything else we should know?')
-  const references = toList(text('referenceWebsites', 'Brand references and examples'))
-
   return (
-    <div className={styles.intakeLayout}>
-      {content}
+    <div className={styles.workspace}>
+      {formContent}
 
-      <aside className={styles.previewPanel} aria-live="polite">
-        <div className={styles.previewCard}>
-          <div className={styles.previewHeader}>
-            <span className={styles.previewEyebrow}>Live brand brief</span>
-            <h3>This is the site plan you are building</h3>
-            <p>
-              Fill the form on the left. This container shows the exact answers
-              the website will use for pages, colors, fonts, text style, domain,
-              contact info, and social links.
-            </p>
+      <aside className={styles.previewColumn} aria-live="polite">
+        <div className={styles.previewFrame}>
+          <div className={styles.previewTopBar}>
+            <div className={styles.previewDots} aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </div>
+            <div className={styles.previewUrl}>{brandName} / live website preview</div>
+            <div className={styles.previewBadge}>{completionPercent}% brief filled</div>
           </div>
 
-          <div className={styles.previewHeroFrame}>
-            <div className={styles.previewTopRow}>
-              <div>
-                <span className={styles.previewLabel}>Brand name</span>
-                <h4>{brandName}</h4>
-                <p>{domain}</p>
+          <div
+            className={styles.previewCanvas}
+            style={
+              {
+                '--preview-primary': BRAND_INTAKE_DEFAULTS.primaryColor,
+                '--preview-secondary': BRAND_INTAKE_DEFAULTS.secondaryColor,
+                '--preview-accent': BRAND_INTAKE_DEFAULTS.accentColor,
+                '--preview-primary-dynamic': draft.primaryColor || BRAND_INTAKE_DEFAULTS.primaryColor,
+                '--preview-secondary-dynamic': draft.secondaryColor || BRAND_INTAKE_DEFAULTS.secondaryColor,
+                '--preview-accent-dynamic': draft.accentColor || BRAND_INTAKE_DEFAULTS.accentColor,
+              } as React.CSSProperties
+            }
+          >
+            <header className={styles.previewHeader}>
+              <div className={styles.previewBrand}>
+                <span
+                  className={styles.previewBrandMark}
+                  style={{ backgroundColor: draft.primaryColor || BRAND_INTAKE_DEFAULTS.primaryColor }}
+                >
+                  {brandInitial}
+                </span>
+                <div>
+                  <strong>{brandName}</strong>
+                  <span>{domain}</span>
+                </div>
               </div>
-              <div className={styles.previewSwatches} aria-label="brand colors">
-                <span style={{ backgroundColor: primaryColor }} />
-                <span style={{ backgroundColor: secondaryColor }} />
-                <span style={{ backgroundColor: accentColor }} />
+
+              <nav className={styles.previewNav} aria-label="Preview navigation">
+                {previewPages.map((page) => (
+                  <span key={page}>{page}</span>
+                ))}
+              </nav>
+            </header>
+
+            <section className={styles.previewHero}>
+              <div className={styles.previewHeroCopy}>
+                <span className={styles.previewEyebrow}>{industry}</span>
+                <h4>{heroTitle}</h4>
+                <p>{heroSubtitle}</p>
+
+                <div className={styles.previewHeroActions}>
+                  <span className={styles.previewButton}>Primary action</span>
+                  <span className={styles.previewButtonGhost}>Secondary action</span>
+                </div>
+
+                <div className={styles.previewHeroMeta}>
+                  <span>{preferredTone}</span>
+                  <span>{brandPersonality}</span>
+                  <span>{typography}</span>
+                </div>
               </div>
-            </div>
 
-            <div className={styles.previewBlock}>
-              <strong>How the homepage should sound</strong>
-              <p>{heroTitle}</p>
-              <p>{heroSubtitle}</p>
-            </div>
+              <div className={styles.previewHeroPanel}>
+                <div className={styles.previewColorCard}>
+                  <span>Colors</span>
+                  <div className={styles.previewColorList}>
+                    <div className={styles.previewColorRow}>
+                      <i style={{ backgroundColor: draft.primaryColor || BRAND_INTAKE_DEFAULTS.primaryColor }} />
+                      <b>Main color</b>
+                    </div>
+                    <div className={styles.previewColorRow}>
+                      <i style={{ backgroundColor: draft.secondaryColor || BRAND_INTAKE_DEFAULTS.secondaryColor }} />
+                      <b>Support color</b>
+                    </div>
+                    <div className={styles.previewColorRow}>
+                      <i style={{ backgroundColor: draft.accentColor || BRAND_INTAKE_DEFAULTS.accentColor }} />
+                      <b>Accent color</b>
+                    </div>
+                  </div>
+                </div>
 
-            <div className={styles.previewGrid}>
-              <div className={styles.previewBlock}>
-                <strong>Pages</strong>
+                <div className={styles.previewInfoCard}>
+                  <span>Photography</span>
+                  <strong>{photographyStyle}</strong>
+                  <p>{references.length > 0 ? references[0] : 'Reference websites will appear here.'}</p>
+                </div>
+              </div>
+            </section>
+
+            <section className={styles.previewSectionGrid}>
+              <article className={styles.previewSectionCard}>
+                <span>Pages to build</span>
                 <div className={styles.previewChipList}>
-                  {pages.map((page) => (
+                  {previewPages.map((page) => (
                     <span key={page}>{page}</span>
                   ))}
                 </div>
-              </div>
-              <div className={styles.previewBlock}>
-                <strong>Contact</strong>
-                <p>{contactName}</p>
+                <p>This menu will appear in the header and footer.</p>
+              </article>
+
+              <article className={styles.previewSectionCard}>
+                <span>Audience</span>
+                <strong>{audience}</strong>
+                <p>{customerGoals}</p>
+                <p>{customerPainPoints}</p>
+              </article>
+
+              <article className={styles.previewSectionCard}>
+                <span>Contact block</span>
+                <strong>{contactName}</strong>
                 <p>{companyName}</p>
                 <p>{email}</p>
                 <p>{phone}</p>
                 <p>
                   {city}, {country}
                 </p>
-              </div>
-              <div className={styles.previewBlock}>
-                <strong>Font and text style</strong>
-                <p>{typography}</p>
-                <p>{preferredTone}</p>
-                <p>{brandPersonality}</p>
-              </div>
-              <div className={styles.previewBlock}>
-                <strong>Audience and content</strong>
-                <p>{audience}</p>
-                <p>{customerGoals}</p>
-                <p>{customerPainPoints}</p>
-              </div>
-              <div className={styles.previewBlock}>
-                <strong>Photos and references</strong>
-                <p>{photographyStyle}</p>
-                <p>{references.join(' · ')}</p>
-              </div>
-              <div className={styles.previewBlock}>
-                <strong>Notes</strong>
-                <p>{keyFeatures.join(' · ')}</p>
-                <p>{notes}</p>
-              </div>
-            </div>
+              </article>
 
-            <div className={styles.previewFooter}>
-              <div>
+              <article className={styles.previewSectionCard}>
+                <span>Social links</span>
+                <div className={styles.previewChipList}>
+                  {previewSocialLinks.map((link) => (
+                    <span key={link}>{link}</span>
+                  ))}
+                </div>
+                <p>{socialLinks.length > 0 ? socialLinks.join(' · ') : 'No social links yet'}</p>
+              </article>
+            </section>
+
+            <footer className={styles.previewFooter}>
+              <div className={styles.previewFooterBlock}>
                 <span>Domain</span>
                 <strong>{domain}</strong>
               </div>
-              <div>
-                <span>Social links</span>
-                <strong>{socialLinks.join(' · ')}</strong>
+              <div className={styles.previewFooterBlock}>
+                <span>Launch</span>
+                <strong>{launchDate}</strong>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.mapCard}>
-          <h3>What each part means</h3>
-          <p>Short, simple notes so the client understands what to fill in.</p>
-          <div className={styles.exampleList}>
-            <div className={styles.exampleItem}>
-              <strong>Pages</strong>
-              <span>What pages should exist on the website.</span>
-            </div>
-            <div className={styles.exampleItem}>
-              <strong>Brand name and domain</strong>
-              <span>What the site is called and what address people type.</span>
-            </div>
-            <div className={styles.exampleItem}>
-              <strong>Colors and font</strong>
-              <span>How the brand should look and feel.</span>
-            </div>
-            <div className={styles.exampleItem}>
-              <strong>Contact and social</strong>
-              <span>How people reach the brand outside the website.</span>
-            </div>
+              <div className={styles.previewFooterBlock}>
+                <span>Notes</span>
+                <strong>{previewFeatures.join(' · ')}</strong>
+                <strong>{notes}</strong>
+              </div>
+            </footer>
           </div>
         </div>
       </aside>

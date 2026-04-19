@@ -1,11 +1,21 @@
 'use server'
 
-import prisma from '@/lib/prisma'
+import { createBrandIntakeEntry } from '@/lib/brand-intake-store'
+import { normalizeWebsiteInput, validateBrandIntakeField } from '@/lib/brand-intake-validation'
 import { revalidatePath } from 'next/cache'
 
 type SaveBrandIntakeResult = {
   success: boolean
   error?: string
+}
+
+function safeRevalidatePath(path: string) {
+  try {
+    revalidatePath(path)
+  } catch {
+    // Cache revalidation is best-effort here so the action can also be tested
+    // in standalone scripts outside the Next.js request context.
+  }
 }
 
 function readText(formData: FormData, key: string) {
@@ -18,13 +28,24 @@ export async function saveBrandIntake(formData: FormData): Promise<SaveBrandInta
   const brandName = readText(formData, 'brandName')
   const contactName = readText(formData, 'contactName')
   const email = readText(formData, 'email')
+  const websiteInput = readText(formData, 'website')
 
-  if (!brandName || !contactName || !email) {
-    return { success: false, error: 'Brand name, contact name, and email are required.' }
+  const requiredErrors = [
+    validateBrandIntakeField('brandName', brandName),
+    validateBrandIntakeField('contactName', contactName),
+    validateBrandIntakeField('email', email),
+    validateBrandIntakeField('website', websiteInput),
+    validateBrandIntakeField('primaryColor', readText(formData, 'primaryColor')),
+    validateBrandIntakeField('secondaryColor', readText(formData, 'secondaryColor')),
+    validateBrandIntakeField('accentColor', readText(formData, 'accentColor')),
+  ].filter(Boolean)
+
+  if (requiredErrors.length > 0) {
+    return { success: false, error: 'Please fix the highlighted fields and try again.' }
   }
 
   const phone = readText(formData, 'phone')
-  const website = readText(formData, 'website')
+  const website = normalizeWebsiteInput(websiteInput)
 
   const answers = {
     companyName: readText(formData, 'companyName'),
@@ -55,18 +76,17 @@ export async function saveBrandIntake(formData: FormData): Promise<SaveBrandInta
     notes: readText(formData, 'notes'),
   }
 
-  await prisma.brandIntake.create({
-    data: {
-      brandName,
-      contactName,
-      email,
-      phone: phone || null,
-      website: website || null,
-      answers,
-    },
+  await createBrandIntakeEntry({
+    brandName,
+    contactName,
+    email,
+    phone: phone || null,
+    website: website || null,
+    answers,
   })
 
-  revalidatePath('/admin/brand-intake')
+  safeRevalidatePath('/admin/brand-intake')
+  safeRevalidatePath('/admin')
 
   return { success: true }
 }

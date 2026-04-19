@@ -13,25 +13,24 @@ export default function BrandIntakePage() {
     <div className={styles.page}>
       <section className={styles.hero}>
         <div className={styles.eyebrow}>Public Brand Intake</div>
-        <h1 className={styles.title}>Tell Us About Your Brand</h1>
+        <h1 className={styles.title}>Fill out the brand brief</h1>
         <p className={styles.subtitle}>
-          This page is for anyone who wants a custom website. Just fill in what
-          you know in simple words. The panel on the right shows exactly what
-          each answer changes on the final site.
+          Write the answers the way you would explain them to a designer. Just
+          fill the form below and submit when you are ready.
         </p>
 
         <div className={styles.heroGrid}>
           <div className={styles.heroCard}>
             <strong>No login needed</strong>
-            <span>Open the page and start typing.</span>
+            <span>Open the page and start filling it in.</span>
           </div>
           <div className={styles.heroCard}>
-            <strong>Answers are saved</strong>
-            <span>Everything goes straight to the database.</span>
+            <strong>Simple form</strong>
+            <span>Answer in plain language, one section at a time.</span>
           </div>
           <div className={styles.heroCard}>
-            <strong>Easy to understand</strong>
-            <span>Each field shows where it will appear on the site.</span>
+            <strong>Saved to database</strong>
+            <span>The brief is stored automatically after submit.</span>
           </div>
         </div>
       </section>
@@ -40,7 +39,6 @@ export default function BrandIntakePage() {
         submitLabel="Submit brand intake"
         successMessage="Thank you. Your brand intake has been received."
         errorMessage="Could not submit the form. Please try again."
-        showPreview
       />
     </div>
   )

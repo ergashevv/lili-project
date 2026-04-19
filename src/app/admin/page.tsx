@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import prisma from '@/lib/prisma'
+import { countBrandIntakes, listRecentBrandIntakes } from '@/lib/brand-intake-store'
 import styles from './Dashboard.module.css'
 
 export default async function DashboardPage() {
@@ -7,11 +8,8 @@ export default async function DashboardPage() {
     prisma.order.count(),
     prisma.product.count(),
     prisma.category.count(),
-    prisma.brandIntake.count(),
-    prisma.brandIntake.findMany({
-      orderBy: { createdAt: 'desc' },
-      take: 5,
-    }),
+    countBrandIntakes(),
+    listRecentBrandIntakes(5),
   ])
 
   return (
