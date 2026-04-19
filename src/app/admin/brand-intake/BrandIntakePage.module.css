@@ -343,6 +343,11 @@
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.04);
 }
 
+.previewCard {
+  background: linear-gradient(180deg, #fffefc 0%, #fff7f1 100%);
+  border: 1px solid rgba(128, 0, 32, 0.12);
+}
+
 .previewHeader {
   display: grid;
   gap: 0.45rem;
@@ -374,6 +379,127 @@
 .previewSectionBlock p {
   color: #6b7280;
   line-height: 1.6;
+}
+
+.previewHeroFrame {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(128, 0, 32, 0.08);
+}
+
+.previewTopRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.previewLabel {
+  display: block;
+  color: #8a7182;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.previewTopRow h4 {
+  margin-top: 0.3rem;
+  color: #111827;
+  font-family: var(--font-serif);
+  font-size: 1.65rem;
+  line-height: 1.05;
+}
+
+.previewTopRow p {
+  margin-top: 0.3rem;
+  color: #6b7280;
+  font-size: 0.88rem;
+}
+
+.previewSwatches {
+  display: flex;
+  gap: 0.45rem;
+}
+
+.previewSwatches span {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(17, 24, 39, 0.12);
+}
+
+.previewBlock {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.95rem 1rem;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid #ece7eb;
+}
+
+.previewBlock strong {
+  color: #111827;
+  font-size: 0.92rem;
+}
+
+.previewBlock p {
+  color: #4b5563;
+  line-height: 1.6;
+  font-size: 0.9rem;
+}
+
+.previewGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.previewChipList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.previewChipList span {
+  border-radius: 999px;
+  padding: 0.38rem 0.68rem;
+  background: rgba(128, 0, 32, 0.08);
+  color: #7c1730;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.previewFooter {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.previewFooter div {
+  padding: 0.9rem 1rem;
+  border-radius: 16px;
+  background: #111827;
+  color: #f9fafb;
+}
+
+.previewFooter span {
+  display: block;
+  color: rgba(249, 250, 251, 0.72);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.previewFooter strong {
+  display: block;
+  margin-top: 0.35rem;
+  color: #fff;
+  line-height: 1.5;
+  font-size: 0.9rem;
 }
 
 .previewFocusCard {
@@ -723,5 +849,15 @@
   .previewFocusTop {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .previewTopRow,
+  .previewGrid,
+  .previewFooter {
+    grid-template-columns: 1fr;
+  }
+
+  .previewTopRow {
+    flex-direction: column;
   }
 }
