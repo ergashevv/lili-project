@@ -3,6 +3,13 @@ import prisma from '@/lib/prisma'
 import { countBrandIntakes, listRecentBrandIntakes } from '@/lib/brand-intake-store'
 import styles from './Dashboard.module.css'
 
+function splitList(value: string | undefined) {
+  return (value || '')
+    .split(/\r?\n|,|;/)
+    .map((item) => item.trim())
+    .filter(Boolean)
+}
+
 export default async function DashboardPage() {
   const [orders, products, categories, brandIntakeCount, brandIntakes] = await Promise.all([
     prisma.order.count(),
@@ -57,6 +64,7 @@ export default async function DashboardPage() {
           <div className={styles.intakeGrid}>
             {brandIntakes.map((entry) => {
               const answers = entry.answers as Record<string, string | undefined>
+              const pages = splitList(answers.requiredPages)
               return (
                 <article key={entry.id} className={styles.intakeCard}>
                   <div className={styles.intakeHeader}>
@@ -68,13 +76,19 @@ export default async function DashboardPage() {
                   </p>
                   <ul className={styles.intakeList}>
                     <li>
-                      <strong>Industry:</strong> {answers.industry || 'TBD'}
+                      <strong>Website:</strong> {entry.website || 'TBD'}
                     </li>
                     <li>
-                      <strong>Audience:</strong> {answers.primaryAudience || 'TBD'}
+                      <strong>Pages:</strong> {pages.length > 0 ? pages.join(' · ') : 'TBD'}
                     </li>
                     <li>
-                      <strong>Hero:</strong> {answers.heroTitle || 'TBD'}
+                      <strong>Colors:</strong>{' '}
+                      {[answers.primaryColor, answers.secondaryColor, answers.accentColor]
+                        .filter(Boolean)
+                        .join(' · ') || 'TBD'}
+                    </li>
+                    <li>
+                      <strong>Tone:</strong> {answers.preferredTone || 'TBD'}
                     </li>
                   </ul>
                 </article>

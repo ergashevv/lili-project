@@ -15,25 +15,24 @@ export default async function BrandIntakePage() {
     <div className={styles.page}>
       <section className={styles.hero}>
         <div className={styles.eyebrow}>Brand Intake</div>
-        <h1 className={styles.title}>Collect the client brief before design starts</h1>
+        <h1 className={styles.title}>Collect the basics before design starts</h1>
         <p className={styles.subtitle}>
-          Use this page to collect the exact answers the website needs for
-          design, copy, SEO, and launch. Every submission is saved in the
-          database and appears in the dashboard.
+          Use this page to collect the essential answers for the site. Every
+          submission is saved in the database and appears in the dashboard.
         </p>
 
         <div className={styles.heroGrid}>
           <div className={styles.heroCard}>
-            <strong>Fast setup</strong>
-            <span>Gather the essentials in one clean form.</span>
+            <strong>Quick to fill</strong>
+            <span>Only the fields we actually need are included.</span>
           </div>
           <div className={styles.heroCard}>
-            <strong>Structured data</strong>
-            <span>Core fields save cleanly and extras stay in JSON.</span>
+            <strong>Stored safely</strong>
+            <span>The answers go straight into the database.</span>
           </div>
           <div className={styles.heroCard}>
             <strong>Recent briefs</strong>
-            <span>Review the latest submissions on this page.</span>
+            <span>See the latest submissions on this page.</span>
           </div>
         </div>
       </section>
@@ -45,21 +44,20 @@ export default async function BrandIntakePage() {
           <div className={styles.panelCard}>
             <h3>What this captures</h3>
             <p>
-              This form gathers the information needed for design, content, SEO,
-              and launch planning before the site is built.
+              This form gathers the essentials needed to build the website.
             </p>
             <ul className={styles.bulletList}>
               <li>
                 <span className={styles.bulletDot} />
-                Brand identity, voice, and audience details
+                Brand name, contact person, email, and website
               </li>
               <li>
                 <span className={styles.bulletDot} />
-                Visual direction, colors, fonts, and references
+                Pages to include, font style, and text tone
               </li>
               <li>
                 <span className={styles.bulletDot} />
-                Homepage copy, pages, social links, and launch notes
+                Colors, social links, and extra notes
               </li>
             </ul>
           </div>

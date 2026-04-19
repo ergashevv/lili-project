@@ -13,24 +13,24 @@ export default function BrandIntakePage() {
     <div className={styles.page}>
       <section className={styles.hero}>
         <div className={styles.eyebrow}>Public Brand Intake</div>
-        <h1 className={styles.title}>Fill out the brand brief</h1>
+        <h1 className={styles.title}>Tell us the basics of your brand</h1>
         <p className={styles.subtitle}>
-          Write the answers the way you would explain them to a designer. Just
-          fill the form below and submit when you are ready.
+          Fill in the form below in plain language. Your answers will be saved
+          to the dashboard right away.
         </p>
 
         <div className={styles.heroGrid}>
           <div className={styles.heroCard}>
             <strong>No login needed</strong>
-            <span>Open the page and start filling it in.</span>
+            <span>Anyone can open the page and start filling it out.</span>
           </div>
           <div className={styles.heroCard}>
-            <strong>Simple form</strong>
-            <span>Answer in plain language, one section at a time.</span>
+            <strong>Simple fields</strong>
+            <span>Brand name, domain, pages, colors, and contact info.</span>
           </div>
           <div className={styles.heroCard}>
-            <strong>Saved to database</strong>
-            <span>The brief is stored automatically after submit.</span>
+            <strong>Saved to dashboard</strong>
+            <span>The submission appears in the dashboard after submit.</span>
           </div>
         </div>
       </section>

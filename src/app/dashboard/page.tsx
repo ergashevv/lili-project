@@ -1,5 +1,7 @@
-import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
+export { default } from '../admin/page'
 
-export default function DashboardPage() {
-  redirect('/admin')
+export const metadata: Metadata = {
+  title: 'Dashboard | Lili',
+  description: 'Overview of the store and brand intake submissions.',
 }

@@ -22,7 +22,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className={styles.logo}>LILI</div>
         
         <nav className={styles.nav}>
-          <Link href="/admin" className={styles.navLink}>
+          <Link href="/dashboard" className={styles.navLink}>
             <Home size={18} /> Dashboard
           </Link>
           <Link href="/admin/categories" className={styles.navLink}>

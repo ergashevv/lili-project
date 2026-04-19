@@ -35,6 +35,7 @@ export async function saveBrandIntake(formData: FormData): Promise<SaveBrandInta
     validateBrandIntakeField('contactName', contactName),
     validateBrandIntakeField('email', email),
     validateBrandIntakeField('website', websiteInput),
+    validateBrandIntakeField('requiredPages', readText(formData, 'requiredPages')),
     validateBrandIntakeField('primaryColor', readText(formData, 'primaryColor')),
     validateBrandIntakeField('secondaryColor', readText(formData, 'secondaryColor')),
     validateBrandIntakeField('accentColor', readText(formData, 'accentColor')),
@@ -48,30 +49,12 @@ export async function saveBrandIntake(formData: FormData): Promise<SaveBrandInta
   const website = normalizeWebsiteInput(websiteInput)
 
   const answers = {
-    companyName: readText(formData, 'companyName'),
-    country: readText(formData, 'country'),
-    city: readText(formData, 'city'),
-    launchDate: readText(formData, 'launchDate'),
-    industry: readText(formData, 'industry'),
-    tagline: readText(formData, 'tagline'),
-    mission: readText(formData, 'mission'),
-    vision: readText(formData, 'vision'),
-    values: readText(formData, 'values'),
-    brandPersonality: readText(formData, 'brandPersonality'),
-    preferredTone: readText(formData, 'preferredTone'),
-    primaryAudience: readText(formData, 'primaryAudience'),
-    customerGoals: readText(formData, 'customerGoals'),
-    customerPainPoints: readText(formData, 'customerPainPoints'),
     primaryColor: readText(formData, 'primaryColor'),
     secondaryColor: readText(formData, 'secondaryColor'),
     accentColor: readText(formData, 'accentColor'),
     typography: readText(formData, 'typography'),
-    photographyStyle: readText(formData, 'photographyStyle'),
-    referenceWebsites: readText(formData, 'referenceWebsites'),
     requiredPages: readText(formData, 'requiredPages'),
-    heroTitle: readText(formData, 'heroTitle'),
-    heroSubtitle: readText(formData, 'heroSubtitle'),
-    keyFeatures: readText(formData, 'keyFeatures'),
+    preferredTone: readText(formData, 'preferredTone'),
     socialLinks: readText(formData, 'socialLinks'),
     notes: readText(formData, 'notes'),
   }
@@ -85,6 +68,7 @@ export async function saveBrandIntake(formData: FormData): Promise<SaveBrandInta
     answers,
   })
 
+  safeRevalidatePath('/dashboard')
   safeRevalidatePath('/admin/brand-intake')
   safeRevalidatePath('/admin')
 

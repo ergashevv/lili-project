@@ -4,6 +4,22 @@ export const BRAND_INTAKE_DEFAULTS = {
   accentColor: '#f8f1ea',
 }
 
+export const BRAND_INTAKE_FIELD_NAMES = [
+  'brandName',
+  'contactName',
+  'email',
+  'phone',
+  'website',
+  'requiredPages',
+  'primaryColor',
+  'secondaryColor',
+  'accentColor',
+  'typography',
+  'preferredTone',
+  'socialLinks',
+  'notes',
+] as const
+
 export function createBrandIntakeDraft() {
   return BRAND_INTAKE_FIELD_NAMES.reduce<Record<string, string>>(
     (draft, name) => {
@@ -15,40 +31,6 @@ export function createBrandIntakeDraft() {
     {},
   )
 }
-
-export const BRAND_INTAKE_FIELD_NAMES = [
-  'brandName',
-  'companyName',
-  'contactName',
-  'email',
-  'phone',
-  'website',
-  'industry',
-  'tagline',
-  'mission',
-  'vision',
-  'values',
-  'brandPersonality',
-  'preferredTone',
-  'primaryAudience',
-  'customerGoals',
-  'customerPainPoints',
-  'country',
-  'city',
-  'launchDate',
-  'primaryColor',
-  'secondaryColor',
-  'accentColor',
-  'typography',
-  'photographyStyle',
-  'referenceWebsites',
-  'requiredPages',
-  'heroTitle',
-  'heroSubtitle',
-  'keyFeatures',
-  'socialLinks',
-  'notes',
-] as const
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const PHONE_PATTERN = /^[+\d][\d\s()-]{6,}$/
@@ -64,7 +46,7 @@ function isValidEmail(value: string) {
 
 function isValidWebsite(value: string) {
   const trimmed = value.trim()
-  if (!trimmed) return true
+  if (!trimmed) return false
 
   try {
     const withProtocol = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`
@@ -91,13 +73,11 @@ export function validateBrandIntakeField(name: string, value: string) {
 
   if (name === 'brandName') {
     if (!isNonEmpty(trimmed)) return 'Brand name is required.'
-    if (trimmed.length < 2) return 'Brand name should be at least 2 characters.'
     return ''
   }
 
   if (name === 'contactName') {
     if (!isNonEmpty(trimmed)) return 'Contact person is required.'
-    if (trimmed.length < 2) return 'Contact name should be at least 2 characters.'
     return ''
   }
 
@@ -113,39 +93,20 @@ export function validateBrandIntakeField(name: string, value: string) {
   }
 
   if (name === 'website') {
+    if (!isNonEmpty(trimmed)) return 'Website domain is required.'
     if (!isValidWebsite(trimmed)) {
       return 'Use a domain like lili.uz or a full URL like https://lili.uz.'
     }
     return ''
   }
 
-  if (name === 'industry') {
-    if (!isNonEmpty(trimmed)) return 'Industry / niche is required.'
-    return ''
-  }
-
-  if (name === 'primaryAudience') {
-    if (!isNonEmpty(trimmed)) return 'Primary audience is required.'
-    return ''
-  }
-
-  if (name === 'heroTitle') {
-    if (!isNonEmpty(trimmed)) return 'Homepage hero title is required.'
+  if (name === 'requiredPages') {
+    if (!isNonEmpty(trimmed)) return 'Add the pages you want on the site.'
     return ''
   }
 
   if (name === 'primaryColor' || name === 'secondaryColor' || name === 'accentColor') {
     if (!isValidColor(trimmed)) return 'Choose a color from the picker.'
-    return ''
-  }
-
-  if (name === 'requiredPages') {
-    if (!isNonEmpty(trimmed)) return 'Add at least one page, like About or Contact.'
-    return ''
-  }
-
-  if (name === 'socialLinks') {
-    if (!trimmed) return ''
     return ''
   }
 
