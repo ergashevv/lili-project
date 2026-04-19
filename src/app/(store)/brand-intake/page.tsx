@@ -13,26 +13,25 @@ export default function BrandIntakePage() {
     <div className={styles.page}>
       <section className={styles.hero}>
         <div className={styles.eyebrow}>Public Brand Intake</div>
-        <h1 className={styles.title}>Start Your Brand Project</h1>
+        <h1 className={styles.title}>Tell Us About Your Brand</h1>
         <p className={styles.subtitle}>
-          This page is open to everyone. Fill in the form below and we will use
-          your answers to shape the website, content, and visual direction.
-          The live preview on the right shows exactly where each answer will
-          appear on the final site.
+          This page is for anyone who wants a custom website. Just fill in what
+          you know in simple words. The panel on the right shows exactly what
+          each answer changes on the final site.
         </p>
 
         <div className={styles.heroGrid}>
           <div className={styles.heroCard}>
-            <strong>No login required</strong>
-            <span>Anyone can submit the form from this page.</span>
+            <strong>No login needed</strong>
+            <span>Open the page and start typing.</span>
           </div>
           <div className={styles.heroCard}>
-            <strong>Saved to database</strong>
-            <span>Every submission is stored for the admin team.</span>
+            <strong>Answers are saved</strong>
+            <span>Everything goes straight to the database.</span>
           </div>
           <div className={styles.heroCard}>
-            <strong>Built for clarity</strong>
-            <span>Answer only what you know now. You can update later.</span>
+            <strong>Easy to understand</strong>
+            <span>Each field shows where it will appear on the site.</span>
           </div>
         </div>
       </section>

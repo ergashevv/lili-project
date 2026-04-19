@@ -376,6 +376,109 @@
   line-height: 1.6;
 }
 
+.previewFocusCard {
+  display: grid;
+  gap: 0.95rem;
+  border-radius: 24px;
+  padding: 1.35rem;
+  background: linear-gradient(180deg, #fffdfc 0%, #fff7f1 100%);
+  border: 1px solid rgba(128, 0, 32, 0.08);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.04);
+}
+
+.previewFocusTop {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.previewSectionTag {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.38rem 0.72rem;
+  background: rgba(128, 0, 32, 0.1);
+  color: var(--primary-color);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.previewAppearsIn {
+  color: #6b7280;
+  line-height: 1.45;
+  font-size: 0.82rem;
+}
+
+.previewFocusCard h4 {
+  color: #111827;
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  line-height: 1.08;
+}
+
+.previewFocusDescription {
+  color: #4b5563;
+  line-height: 1.7;
+}
+
+.previewExampleCard {
+  display: grid;
+  gap: 0.4rem;
+  border-radius: 18px;
+  padding: 1rem 1.05rem;
+  background: #fff;
+  border: 1px solid #ece7eb;
+}
+
+.previewExampleCard span {
+  color: #8a7182;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.previewExampleCard strong {
+  color: #111827;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.previewSiteMap {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.previewMapCard {
+  display: grid;
+  gap: 0.25rem;
+  border-radius: 18px;
+  padding: 0.95rem 1rem;
+  background: #fff;
+  border: 1px solid #ece7eb;
+}
+
+.previewMapCard strong {
+  color: #111827;
+  font-size: 0.95rem;
+}
+
+.previewMapCard span {
+  color: #6b7280;
+  line-height: 1.5;
+  font-size: 0.85rem;
+}
+
+.previewMapCardActive {
+  border-color: rgba(128, 0, 32, 0.28);
+  box-shadow: 0 0 0 3px rgba(128, 0, 32, 0.08);
+  background: rgba(128, 0, 32, 0.04);
+}
+
 .previewMockSite {
   display: grid;
   gap: 1rem;
@@ -560,6 +663,31 @@
   font-size: 0.84rem;
 }
 
+.exampleList {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.exampleItem {
+  display: grid;
+  gap: 0.22rem;
+  padding: 0.85rem 0.95rem;
+  border-radius: 16px;
+  background: #f9fafb;
+  border: 1px solid #ece7eb;
+}
+
+.exampleItem strong {
+  color: #111827;
+  font-size: 0.9rem;
+}
+
+.exampleItem span {
+  color: #6b7280;
+  line-height: 1.45;
+  font-size: 0.84rem;
+}
+
 @media (max-width: 1100px) {
   .layout {
     grid-template-columns: 1fr;
@@ -590,5 +718,10 @@
 
   .previewTopBar {
     flex-direction: column;
+  }
+
+  .previewFocusTop {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
