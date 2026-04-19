@@ -10,6 +10,15 @@ function splitList(value: string | undefined) {
     .filter(Boolean)
 }
 
+function text(value: string | undefined | null) {
+  return value?.trim() || 'TBD'
+}
+
+function listText(value: string | undefined) {
+  const items = splitList(value)
+  return items.length > 0 ? items.join(' · ') : 'TBD'
+}
+
 export default async function DashboardPage() {
   const [orders, products, categories, brandIntakeCount, brandIntakes] = await Promise.all([
     prisma.order.count(),
@@ -53,7 +62,7 @@ export default async function DashboardPage() {
         <div className={styles.sectionHeader}>
           <div>
             <h2>Recent Brand Intake Submissions</h2>
-            <p>Newest form submissions are shown here as soon as they are saved.</p>
+            <p>Each submission appears here as a row in the table.</p>
           </div>
           <Link href="/admin/brand-intake" className={styles.sectionLink}>
             Open intake page
@@ -61,58 +70,74 @@ export default async function DashboardPage() {
         </div>
 
         {brandIntakes.length > 0 ? (
-          <div className={styles.intakeGrid}>
-            {brandIntakes.map((entry) => {
-              const answers = entry.answers as Record<string, string | undefined>
-              const pages = splitList(answers.requiredPages)
-              const socialLinks = splitList(answers.socialLinks)
-              return (
-                <article key={entry.id} className={styles.intakeCard}>
-                  <div className={styles.intakeHeader}>
-                    <h3>{entry.brandName}</h3>
-                    <span>{entry.createdAt.toLocaleDateString()}</span>
-                  </div>
-                  <p className={styles.intakeMeta}>
-                    {entry.contactName} · {entry.email}
-                  </p>
-                  <ul className={styles.intakeList}>
-                    <li>
-                      <strong>Contact:</strong> {entry.contactName || 'TBD'}
-                    </li>
-                    <li>
-                      <strong>Email:</strong> {entry.email || 'TBD'}
-                    </li>
-                    <li>
-                      <strong>Phone:</strong> {entry.phone || 'TBD'}
-                    </li>
-                    <li>
-                      <strong>Website:</strong> {entry.website || 'TBD'}
-                    </li>
-                    <li>
-                      <strong>Pages:</strong> {pages.length > 0 ? pages.join(' · ') : 'TBD'}
-                    </li>
-                    <li>
-                      <strong>Colors:</strong>{' '}
-                      {[answers.primaryColor, answers.secondaryColor, answers.accentColor]
-                        .filter(Boolean)
-                        .join(' · ') || 'TBD'}
-                    </li>
-                    <li>
-                      <strong>Font:</strong> {answers.typography || 'TBD'}
-                    </li>
-                    <li>
-                      <strong>Tone:</strong> {answers.preferredTone || 'TBD'}
-                    </li>
-                    <li>
-                      <strong>Social:</strong> {socialLinks.length > 0 ? socialLinks.join(' · ') : 'TBD'}
-                    </li>
-                    <li>
-                      <strong>Notes:</strong> {answers.notes || 'TBD'}
-                    </li>
-                  </ul>
-                </article>
-              )
-            })}
+          <div className={styles.tableShell}>
+            <table className={styles.submissionsTable}>
+              <thead>
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Brand</th>
+                  <th scope="col">Contact</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Phone</th>
+                  <th scope="col">Website</th>
+                  <th scope="col">Pages</th>
+                  <th scope="col">Colors</th>
+                  <th scope="col">Font</th>
+                  <th scope="col">Tone</th>
+                  <th scope="col">Social</th>
+                  <th scope="col">Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {brandIntakes.map((entry) => {
+                  const answers = entry.answers as Record<string, string | undefined>
+                  const colorList = [
+                    { label: 'Primary', value: answers.primaryColor },
+                    { label: 'Secondary', value: answers.secondaryColor },
+                    { label: 'Accent', value: answers.accentColor },
+                  ].filter((item): item is { label: string; value: string } => Boolean(item.value?.trim()))
+                  return (
+                    <tr key={entry.id}>
+                      <td className={styles.dateCell}>{entry.createdAt.toLocaleDateString()}</td>
+                      <td>
+                        <div className={styles.brandCell}>
+                          <strong>{text(entry.brandName)}</strong>
+                        </div>
+                      </td>
+                      <td>{text(entry.contactName)}</td>
+                      <td>{text(entry.email)}</td>
+                      <td>{text(entry.phone)}</td>
+                      <td>{text(entry.website)}</td>
+                      <td>{listText(answers.requiredPages)}</td>
+                      <td>
+                        {colorList.length > 0 ? (
+                          <div className={styles.colorList}>
+                            {colorList.map((color) => (
+                              <span key={color.label} className={styles.colorChip}>
+                                <span
+                                  className={styles.colorSwatch}
+                                  style={{ backgroundColor: color.value }}
+                                  aria-hidden="true"
+                                />
+                                <span>
+                                  {color.label}: {color.value}
+                                </span>
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          'TBD'
+                        )}
+                      </td>
+                      <td>{text(answers.typography)}</td>
+                      <td>{text(answers.preferredTone)}</td>
+                      <td>{listText(answers.socialLinks)}</td>
+                      <td className={styles.notesCell}>{text(answers.notes)}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
           </div>
         ) : (
           <div className={styles.emptyState}>
