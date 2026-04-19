@@ -1,0 +1,304 @@
+.container {
+  padding-top: 60px;
+  padding-bottom: 100px;
+  min-height: 80vh;
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  margin-bottom: 50px;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 20px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+
+.count {
+  font-size: 0.9rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 60px;
+  align-items: flex-start;
+}
+
+.itemsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.itemsList {
+  display: flex;
+  flex-direction: column;
+}
+
+.cartItem {
+  display: grid;
+  grid-template-columns: 180px 1fr 200px;
+  gap: 40px;
+  padding: 40px 0;
+  border-bottom: 1px solid #f8f8f8;
+}
+
+.cartItem:last-child {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.itemImage {
+  width: 180px;
+  height: 240px;
+  object-fit: cover;
+  background: #f9f9f9;
+}
+
+.itemInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.itemName {
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+  color: #000;
+}
+
+.itemMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.itemActions {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin-top: 30px;
+}
+
+.quantityControls {
+  display: flex;
+  align-items: center;
+  border: 1px solid #eee;
+}
+
+.quantityControls button {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.quantityControls button:hover {
+  background: #f5f5f5;
+}
+
+.quantityControls span {
+  width: 40px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.removeBtn {
+  background: none;
+  border: none;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: underline;
+  cursor: pointer;
+  color: #999;
+  padding: 0;
+}
+
+.removeBtn:hover {
+  color: #000;
+}
+
+.itemPrice {
+  text-align: right;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #000;
+}
+
+.backBtn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  color: #000;
+  width: fit-content;
+}
+
+.summarySidebar {
+  position: sticky;
+  top: 100px;
+}
+
+.summaryCard {
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  padding: 40px;
+}
+
+.summaryTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.free {
+  color: #000;
+  font-weight: 600;
+}
+
+.divider {
+  height: 1px;
+  background: #f0f0f0;
+  margin: 20px 0;
+}
+
+.totalFinal {
+  color: #000;
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin-bottom: 40px;
+}
+
+.checkoutBtn {
+  width: 100%;
+  padding: 22px;
+  background: #000;
+  color: #fff;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 30px;
+}
+
+.checkoutBtn:hover {
+  background: #222;
+}
+
+.secureInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.secureInfo p {
+  font-size: 0.75rem;
+  color: #999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Empty State */
+.emptyContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+}
+
+.emptyContent {
+  text-align: center;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.emptyContent h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.emptyContent p {
+  color: #666;
+  line-height: 1.6;
+}
+
+.continueBtn {
+  padding: 18px 40px;
+  background: #000;
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cartItem {
+    grid-template-columns: 100px 1fr;
+    gap: 20px;
+  }
+  .itemImage {
+    width: 100px;
+    height: 140px;
+  }
+  .itemPrice {
+    grid-column: 2;
+    text-align: left;
+    margin-top: 10px;
+  }
+  .summaryCard {
+    padding: 25px;
+  }
+}

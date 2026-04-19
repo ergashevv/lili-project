@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" role="img" aria-labelledby="title desc">
+  <title id="title">Simpaty — женская одежда премиум-класса</title>
+  <desc id="desc">Логотип бренда Simpaty с элегантной бордовой надписью без фона.</desc>
+  <text
+    x="50%"
+    y="52%"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="34"
+    fill="#800020"
+    letter-spacing="6"
+  >
+    SIMPATY
+  </text>
+</svg>

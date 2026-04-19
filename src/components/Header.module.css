@@ -1,0 +1,157 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all var(--transition-fast);
+}
+
+.headerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoImage {
+  display: block;
+  height: auto;
+}
+
+.nav {
+  display: flex;
+  gap: 2rem;
+}
+
+.navLink {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  transition: color var(--transition-fast);
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: var(--accent-color);
+  transition: width var(--transition-fast);
+}
+
+.navLink:hover {
+  color: var(--primary-color);
+}
+
+.navLink:hover::after {
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.langBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all var(--transition-fast);
+}
+
+.langBtn:hover {
+  background-color: rgba(0,0,0,0.05);
+  color: var(--primary-color);
+}
+
+.iconBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  color: var(--text-main);
+  transition: color var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconBtn:hover {
+  color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+  .headerContainer {
+    height: 60px;
+  }
+  .logoImage {
+    width: 100px;
+    height: auto;
+  }
+  .nav {
+    display: none;
+  }
+  .actions {
+    gap: 0.8rem;
+  }
+  .langBtn {
+    font-size: 12px;
+    padding: 4px 6px;
+  }
+  .iconBtn svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.adminBadge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #800020;
+  color: white;
+  font-size: 0.5rem;
+  padding: 1px 4px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #000;
+  color: #fff;
+  font-size: 10px;
+  min-width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 0 4px;
+  font-weight: 700;
+}

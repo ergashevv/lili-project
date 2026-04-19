@@ -1,0 +1,21 @@
+.skeleton {
+  background: #f7f7f7;
+  display: block;
+}
+
+.productSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.aspectRatio34 {
+  aspect-ratio: 3/4;
+  width: 100%;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

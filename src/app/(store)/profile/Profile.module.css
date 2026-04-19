@@ -1,0 +1,146 @@
+.container {
+  max-width: 1000px;
+  margin: 120px auto 60px;
+  padding: 0 20px;
+}
+
+.profileCard {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+}
+
+.title {
+  font-family: 'Cinzel', serif;
+  font-size: 2.5rem;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.logoutBtn {
+  padding: 10px 20px;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.logoutBtn:hover {
+  background: #1a1a1a;
+  color: white;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 40px;
+}
+
+.infoSection h2, .orderSection h2 {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.infoItem {
+  margin-bottom: 20px;
+}
+
+.infoItem label {
+  display: block;
+  font-size: 0.8rem;
+  color: #666;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.infoItem p {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.orderList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.orderItem {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background: #fcfcfc;
+  border: 1px solid #eee;
+  border-radius: 12px;
+}
+
+.productImg {
+  width: 80px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.orderInfo {
+  flex: 1;
+}
+
+.productName {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.orderMeta {
+  font-size: 0.9rem;
+  color: #666;
+  display: flex;
+  gap: 20px;
+}
+
+.status {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status_PENDING { background: #fff3e0; color: #ef6c00; }
+.status_PROCESSING { background: #e3f2fd; color: #1565c0; }
+.status_SHIPPED { background: #f3e5f5; color: #7b1fa2; }
+.status_DELIVERED { background: #e8f5e9; color: #2e7d32; }
+.status_CANCELLED { background: #ffebee; color: #c62828; }
+
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  background: #fafafa;
+  border-radius: 12px;
+}
+
+@media (max-width: 768px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+}

@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  role         Role     @default(USER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  orders       Order[]
+  wishlists    Wishlist[]
+}
+
+model Category {
+  id             String        @id @default(cuid())
+  slug           String        @unique
+  nameUz         String
+  nameRu         String
+  imageUrl       String?
+  mainColor      String?       @default("#800020")
+  secondaryColor String?       @default("#ffffff")
+  isActive       Boolean       @default(true)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  products       Product[]
+  subCategories  SubCategory[]
+}
+
+model SubCategory {
+  id         String    @id @default(cuid())
+  categoryId String
+  slug       String    @unique
+  nameUz     String
+  nameRu     String
+  isActive   Boolean   @default(true)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  products   Product[]
+  category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id            String       @id @default(cuid())
+  categoryId    String
+  subCategoryId String?
+  slug          String       @unique
+  nameUz        String
+  nameRu        String
+  descriptionUz String?
+  descriptionRu String?
+  price         Float
+  primaryImage  String?
+  images        String[]
+  colors        String[]     @default([])
+  sizes         String[]     @default([])
+  isActive      Boolean      @default(true)
+  details       Json?        @default("{}")
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  orders        Order[]
+  wishlists     Wishlist[]
+  category      Category     @relation(fields: [categoryId], references: [id])
+  subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id])
+}
+
+model Wishlist {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+}
+
+
+model Order {
+  id            String      @id @default(cuid())
+  userId        String?
+  productId     String
+  status        OrderStatus @default(PENDING)
+  clientName    String
+  clientPhone   String
+  address       String?
+  selectedColor String?
+  selectedSize  String?
+  notes         String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  product       Product     @relation(fields: [productId], references: [id])
+  user          User?       @relation(fields: [userId], references: [id])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}

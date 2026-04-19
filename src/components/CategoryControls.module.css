@@ -1,0 +1,41 @@
+.controlsBar {
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  padding: 20px 0;
+  position: sticky;
+  top: 80px; 
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+}
+
+.inner {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.filterBtn {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 8px 16px;
+  transition: opacity 0.2s;
+}
+
+.filterBtn:hover {
+  opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+  .controlsBar {
+    top: 70px;
+    padding: 12px 0;
+  }
+}

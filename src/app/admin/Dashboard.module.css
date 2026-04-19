@@ -1,0 +1,74 @@
+.title {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  color: #111827;
+  margin-bottom: 2.5rem;
+  letter-spacing: -0.02em;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.statCard {
+  background-color: #fff;
+  padding: 2.5rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.025);
+  border: 1px solid #F3F4F6;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.08), 0 4px 6px rgba(0,0,0,0.04);
+}
+
+.statCard::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 5px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+}
+
+.statCard h3 {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  color: #6B7280;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.value {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #111827;
+  font-family: var(--font-serif);
+}
+
+.welcomeInfo {
+  background-color: #fff;
+  padding: 3rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  border: 1px solid #E5E7EB;
+}
+
+.welcomeInfo h2 {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+  letter-spacing: -0.01em;
+}
+
+.welcomeInfo p {
+  color: #4B5563;
+  line-height: 1.8;
+  font-size: 1.1rem;
+}

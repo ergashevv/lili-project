@@ -1,0 +1,168 @@
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-image: url('/hero-new-collection.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  color: #fff;
+}
+
+.tagline {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.title {
+  font-size: 4.5rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 40px;
+  color: #fff !important; /* Ensure it stays white as intended for Hero */
+  font-family: var(--font-sans); /* Use Sans for a more modern Zara-like look if serif is too traditional here */
+}
+
+.subtitle {
+  display: none; /* Keep it simple like Zara */
+}
+
+.actions {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.btn {
+  padding: 15px 40px;
+  background: #fff;
+  color: #000;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: #000;
+  color: #fff;
+}
+
+.btnSecondary {
+  padding: 15px 40px;
+  border: 1px solid #fff;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btnSecondary:hover {
+  background: #fff;
+  color: #000;
+}
+
+.scrollHint {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 10;
+}
+
+.scrollHintLabel {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #fff;
+}
+
+.scrollHintMouse {
+  width: 1px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.3);
+  position: relative;
+}
+
+.scrollHintDot {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 3px;
+  background: #fff;
+  border-radius: 50%;
+  animation: scrollDown 2s infinite;
+}
+
+@keyframes scrollDown {
+  0% { top: 0; opacity: 0; }
+  30% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: 80vh; /* slightly shorter on mobile for better visibility of next section */
+  }
+  .title {
+    font-size: 2.2rem;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+    line-height: 1.2;
+  }
+  .tagline {
+    font-size: 10px;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+  }
+  .actions {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+  .btn, .btnSecondary {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+  }
+  .scrollHint {
+    bottom: 20px;
+  }
+  .scrollHintMouse {
+    height: 40px;
+  }
+}
