@@ -18,21 +18,9 @@ export default function BrandIntakePage() {
           Fill in the form below in plain language. Your answers will be saved
           to the dashboard right away.
         </p>
-
-        <div className={styles.heroGrid}>
-          <div className={styles.heroCard}>
-            <strong>No login needed</strong>
-            <span>Anyone can open the page and start filling it out.</span>
-          </div>
-          <div className={styles.heroCard}>
-            <strong>Simple fields</strong>
-            <span>Brand name, domain, pages, colors, and contact info.</span>
-          </div>
-          <div className={styles.heroCard}>
-            <strong>Saved to dashboard</strong>
-            <span>The submission appears in the dashboard after submit.</span>
-          </div>
-        </div>
+        <p className={styles.heroNote}>
+          No login needed. Just fill it out from top to bottom and submit.
+        </p>
       </section>
 
       <BrandIntakeForm

@@ -189,7 +189,6 @@ function BrandIntakeFormView({
   const [errors, setErrors] = React.useState<Record<string, string>>({})
 
   const requiredFilled = getRequiredFilledCount(draft)
-  const completionPercent = Math.round((requiredFilled / REQUIRED_FIELDS.length) * 100)
 
   const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.currentTarget
@@ -350,21 +349,6 @@ function BrandIntakeFormView({
 
   return (
     <form className={styles.form} onSubmit={handleSubmit} noValidate>
-      <div className={styles.progressStrip} aria-label="Form progress">
-        <div className={styles.progressCard}>
-          <strong>{completionPercent}%</strong>
-          <span>Required fields filled</span>
-        </div>
-        <div className={styles.progressCard}>
-          <strong>{REQUIRED_FIELDS.length}</strong>
-          <span>Essentials needed</span>
-        </div>
-        <div className={styles.progressCard}>
-          <strong>Simple</strong>
-          <span>Public page only</span>
-        </div>
-      </div>
-
       {FIELD_GROUPS.map((group) => (
         <section key={group.title} className={styles.sectionCard}>
           <div className={styles.sectionHeader}>
@@ -374,7 +358,7 @@ function BrandIntakeFormView({
             </div>
           </div>
 
-          <div className={styles.fieldGrid}>{group.fields.map(renderField)}</div>
+          <div className={styles.fieldStack}>{group.fields.map(renderField)}</div>
         </section>
       ))}
 

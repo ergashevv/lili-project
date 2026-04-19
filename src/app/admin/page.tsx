@@ -65,6 +65,7 @@ export default async function DashboardPage() {
             {brandIntakes.map((entry) => {
               const answers = entry.answers as Record<string, string | undefined>
               const pages = splitList(answers.requiredPages)
+              const socialLinks = splitList(answers.socialLinks)
               return (
                 <article key={entry.id} className={styles.intakeCard}>
                   <div className={styles.intakeHeader}>
@@ -75,6 +76,15 @@ export default async function DashboardPage() {
                     {entry.contactName} · {entry.email}
                   </p>
                   <ul className={styles.intakeList}>
+                    <li>
+                      <strong>Contact:</strong> {entry.contactName || 'TBD'}
+                    </li>
+                    <li>
+                      <strong>Email:</strong> {entry.email || 'TBD'}
+                    </li>
+                    <li>
+                      <strong>Phone:</strong> {entry.phone || 'TBD'}
+                    </li>
                     <li>
                       <strong>Website:</strong> {entry.website || 'TBD'}
                     </li>
@@ -88,7 +98,16 @@ export default async function DashboardPage() {
                         .join(' · ') || 'TBD'}
                     </li>
                     <li>
+                      <strong>Font:</strong> {answers.typography || 'TBD'}
+                    </li>
+                    <li>
                       <strong>Tone:</strong> {answers.preferredTone || 'TBD'}
+                    </li>
+                    <li>
+                      <strong>Social:</strong> {socialLinks.length > 0 ? socialLinks.join(' · ') : 'TBD'}
+                    </li>
+                    <li>
+                      <strong>Notes:</strong> {answers.notes || 'TBD'}
                     </li>
                   </ul>
                 </article>
