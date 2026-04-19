@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { logout } from '@/app/actions/auth'
 import styles from './AdminLayout.module.css'
-import { Home, Layers, ShoppingBag, ListOrdered, LogOut } from 'lucide-react'
+import { Home, Layers, ShoppingBag, ListOrdered, LogOut, FileText } from 'lucide-react'
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter()
@@ -33,6 +33,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </Link>
           <Link href="/admin/orders" className={styles.navLink}>
             <ListOrdered size={18} /> Buyurtmalar
+          </Link>
+          <Link href="/admin/brand-intake" className={styles.navLink}>
+            <FileText size={18} /> Brand Intake
           </Link>
         </nav>
         

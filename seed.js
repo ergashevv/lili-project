@@ -9,23 +9,44 @@ async function main() {
 
   // Admin user
   const email = 'admin@lili.uz';
+  const legacyEmail = 'admin@simpaty.uz';
   const password = 'lili_admin';
   const passwordHash = await bcrypt.hash(password, 10);
-  
-  await prisma.user.upsert({
-    where: { email },
-    update: {
-      passwordHash,
-      role: 'ADMIN',
-      name: 'Lili'
-    },
-    create: {
-      email,
-      name: 'Lili',
-      passwordHash,
-      role: 'ADMIN',
-    },
-  });
+
+  const existingAdmin = await prisma.user.findUnique({ where: { email } });
+  if (existingAdmin) {
+    await prisma.user.update({
+      where: { email },
+      data: {
+        passwordHash,
+        role: 'ADMIN',
+        name: 'Lili',
+      },
+    });
+  } else {
+    const legacyAdmin = await prisma.user.findUnique({ where: { email: legacyEmail } });
+
+    if (legacyAdmin) {
+      await prisma.user.update({
+        where: { id: legacyAdmin.id },
+        data: {
+          email,
+          passwordHash,
+          role: 'ADMIN',
+          name: 'Lili',
+        },
+      });
+    } else {
+      await prisma.user.create({
+        data: {
+          email,
+          name: 'Lili',
+          passwordHash,
+          role: 'ADMIN',
+        },
+      });
+    }
+  }
 
   // Categories
   const categoriesData = [
