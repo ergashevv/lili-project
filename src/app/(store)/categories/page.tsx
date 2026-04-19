@@ -5,9 +5,9 @@ import styles from './CategoriesListPage.module.css'
 import { CategoryGrid, CategoriesPageHeader } from './CategoryGrid'
 
 export const metadata: Metadata = {
-  title: 'Категории женской одежды | Simpaty',
+  title: 'Ayollar kiyimi kategoriyalari | Lili',
   description:
-    'Все категории премиальной женской одежды Simpaty: вечерние платья, деловой стиль, весенние коллекции и элегантные аксессуары.',
+    'Lili ning barcha premium ayollar kiyimi kategoriyalari: kechki liboslar, ish uslubi, mavsumiy kolleksiyalar va nafis aksessuarlar.',
 }
 
 export default async function CategoriesPage() {

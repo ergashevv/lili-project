@@ -20,7 +20,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
         >
-          Simpaty Exclusive
+          Lili Exclusive
         </motion.span>
 
         <motion.h1
@@ -71,5 +71,4 @@ export function Hero() {
     </section>
   )
 }
-
 

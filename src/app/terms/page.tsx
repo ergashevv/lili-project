@@ -12,7 +12,7 @@ export default function TermsPage() {
     <main className={styles.page}>
       <div className="container">
         <header className={styles.header}>
-          <div className={styles.eyebrow}>Simpaty</div>
+          <div className={styles.eyebrow}>Lili</div>
           <h1 className={styles.title}>
             {isUz ? 'Ommaviy oferta (namuna)' : 'Публичная оферта (пример)'}
           </h1>
@@ -62,4 +62,3 @@ export default function TermsPage() {
     </main>
   )
 }
-

@@ -12,7 +12,7 @@ export default function FaqPage() {
     <main className={styles.page}>
       <div className="container">
         <header className={styles.header}>
-          <div className={styles.eyebrow}>Simpaty</div>
+          <div className={styles.eyebrow}>Lili</div>
           <h1 className={styles.title}>FAQ</h1>
           <p className={styles.subtitle}>
             {isUz
@@ -82,4 +82,3 @@ export default function FaqPage() {
     </main>
   )
 }
-

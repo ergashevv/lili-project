@@ -2,40 +2,40 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Providers } from './Providers'
 
-const siteUrl = 'https://www.simpatiya.uz'
+const siteUrl = 'https://www.lili.uz'
 
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'Simpaty',
+  name: 'Lili',
   url: siteUrl,
-  logo: `${siteUrl}/logo-simpaty.svg`,
+  logo: `${siteUrl}/logo-lili.svg`,
   description:
-    'Simpaty — магазин женской одежды премиум-класса в Узбекистане. Платья, костюмы и аксессуары для особых случаев и на каждый день.',
+    'Lili — магазин женской одежды премиум-класса в Узбекистане. Платья, костюмы и аксессуары для особых случаев и на каждый день.',
 }
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Simpaty — женская одежда премиум-класса',
-    template: '%s | Simpaty',
+    default: 'Lili — женская одежда премиум-класса',
+    template: '%s | Lili',
   },
   description:
-    'Simpaty — магазин женской одежды премиум-класса в Узбекистане. Premium liboslar va aksessuarlar rus va o‘zbek tillarida.',
+    'Lili — магазин женской одежды премиум-класса в Узбекистане. Premium liboslar va aksessuarlar rus va o‘zbek tillarida.',
   openGraph: {
     type: 'website',
     url: siteUrl,
-    title: 'Simpaty — женская одежда премиум-класса',
+    title: 'Lili — женская одежда премиум-класса',
     description:
       'Интернет-магазин женской одежды премиум-класса в Узбекистане. Эксклюзивные платья, костюмы и аксессуары.',
-    siteName: 'Simpaty',
+    siteName: 'Lili',
     locale: 'ru_RU',
   },
   alternates: {
     canonical: siteUrl,
   },
   icons: {
-    icon: '/logo-simpaty.svg',
+    icon: '/logo-lili.svg',
   },
 }
 

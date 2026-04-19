@@ -17,8 +17,8 @@ export async function generateMetadata({
 
   if (!product) {
     return {
-      title: 'Товар не найден | Simpaty',
-      description: 'Запрошенный товар не найден в каталоге Simpaty.',
+      title: 'Mahsulot topilmadi | Lili',
+      description: 'So‘ralgan mahsulot Lili katalogida topilmadi.',
     }
   }
 
@@ -26,15 +26,15 @@ export async function generateMetadata({
   const description =
     product.descriptionRu ||
     product.descriptionUz ||
-    `Премиальное платье и женская одежда Simpaty в категории ${product.category.nameRu || product.category.nameUz}.`
+    `Lili ning premium liboslari va ayollar kiyimi, ${product.category.nameRu || product.category.nameUz} kategoriyasida.`
 
   const image = product.primaryImage || product.images[0]
 
   return {
-    title: `${nameRu} | Simpaty`,
+    title: `${nameRu} | Lili`,
     description,
     openGraph: {
-      title: `${nameRu} | Simpaty`,
+      title: `${nameRu} | Lili`,
       description,
       images: image
         ? [

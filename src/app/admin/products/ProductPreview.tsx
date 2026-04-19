@@ -91,7 +91,7 @@ export function ProductPreview({ data }: ProductPreviewProps) {
             </div>
           ) : (
             <div className={styles.pageMock}>
-              <div className={styles.mockHeader}>SIMPATIYA</div>
+              <div className={styles.mockHeader}>LILI</div>
               <div className={styles.mockContent}>
                 <div className={styles.mockImages}>
                    <Image 

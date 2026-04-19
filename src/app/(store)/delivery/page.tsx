@@ -12,7 +12,7 @@ export default function DeliveryPage() {
     <main className={styles.page}>
       <div className="container">
         <header className={styles.header}>
-          <div className={styles.eyebrow}>Simpaty</div>
+          <div className={styles.eyebrow}>Lili</div>
           <h1 className={styles.title}>
             {isUz ? 'Yetkazib berish va to‘lov' : 'Доставка и оплата'}
           </h1>
@@ -110,4 +110,3 @@ export default function DeliveryPage() {
     </main>
   )
 }
-

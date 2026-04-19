@@ -12,7 +12,7 @@ export default function ReturnsPage() {
     <main className={styles.page}>
       <div className="container">
         <header className={styles.header}>
-          <div className={styles.eyebrow}>Simpaty</div>
+          <div className={styles.eyebrow}>Lili</div>
           <h1 className={styles.title}>
             {isUz ? 'Qaytarish va almashtirish' : 'Возврат и обмен'}
           </h1>
@@ -110,4 +110,3 @@ export default function ReturnsPage() {
     </main>
   )
 }
-

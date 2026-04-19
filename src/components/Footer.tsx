@@ -14,11 +14,11 @@ export function Footer() {
     <footer className={styles.footer}>
       <div className={styles.inner}>
         <div className={styles.brand}>
-          <div className={styles.logo}>SIMPATY</div>
+          <div className={styles.logo}>LILI</div>
           <p className={styles.tagline}>
             {isUz
-              ? "Simpaty — premium ayollar kiyimi, nafis siluetlar va sifatli matolar uyg'unligi. Maxsus kechalar, ish uchrashuvlari va kundalik hayot uchun tayyor obrazlar."
-              : 'Simpaty — премиальная женская одежда с акцентом на утончённые силуэты и благородные ткани. Образы для особых случаев, деловых встреч и на каждый день.'}
+              ? "Lili — premium ayollar kiyimi, nafis siluetlar va sifatli matolar uyg'unligi. Maxsus kechalar, ish uchrashuvlari va kundalik hayot uchun tayyor obrazlar."
+              : 'Lili — премиальная женская одежда с акцентом на утончённые силуэты и благородные ткани. Образы для особых случаев, деловых встреч и на каждый день.'}
           </p>
         </div>
 
@@ -85,8 +85,8 @@ export function Footer() {
             </h4>
             <p className={styles.contactText}>
               {isUz
-                ? "Savollar va buyurtmalar uchun:\nTelefon / Telegram: +998 90 000 00 00\nInstagram: @simpaty.uz"
-                : 'По вопросам и заказам:\nТелефон / Telegram: +998 90 000 00 00\nInstagram: @simpaty.uz'}
+                ? "Savollar va buyurtmalar uchun:\nTelefon / Telegram: +998 90 000 00 00\nInstagram: @lili.uz"
+                : 'По вопросам и заказам:\nТелефон / Telegram: +998 90 000 00 00\nInstagram: @lili.uz'}
             </p>
           </div>
         </div>
@@ -94,7 +94,7 @@ export function Footer() {
 
       <div className={styles.bottom}>
         <span>
-          © {year} Simpaty.{' '}
+          © {year} Lili.{' '}
           {isUz ? 'Barcha huquqlar himoyalangan.' : 'Все права защищены.'}
         </span>
         <div className={styles.bottomRight}>
@@ -109,4 +109,3 @@ export function Footer() {
     </footer>
   )
 }
-

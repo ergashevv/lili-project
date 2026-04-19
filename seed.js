@@ -8,8 +8,8 @@ async function main() {
   console.log("Seeding started...");
 
   // Admin user
-  const email = 'admin@simpaty.uz';
-  const password = 'simpaty_admin';
+  const email = 'admin@lili.uz';
+  const password = 'lili_admin';
   const passwordHash = await bcrypt.hash(password, 10);
   
   await prisma.user.upsert({
@@ -17,11 +17,11 @@ async function main() {
     update: {
       passwordHash,
       role: 'ADMIN',
-      name: 'Simpaty'
+      name: 'Lili'
     },
     create: {
       email,
-      name: 'Simpaty',
+      name: 'Lili',
       passwordHash,
       role: 'ADMIN',
     },
@@ -325,4 +325,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-

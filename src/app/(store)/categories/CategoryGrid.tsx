@@ -102,7 +102,7 @@ export function CategoriesPageHeader() {
           animate={{ opacity: 0.8, letterSpacing: '4px' }}
           transition={{ duration: 1 }}
         >
-          Simpaty Collection
+          Lili Collection
         </motion.span>
         <motion.h1 
           className={styles.title}

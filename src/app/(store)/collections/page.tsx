@@ -12,14 +12,14 @@ export default function CollectionsPage() {
     <main className={styles.page}>
       <div className="container">
         <header className={styles.header}>
-          <div className={styles.eyebrow}>Simpaty</div>
+          <div className={styles.eyebrow}>Lili</div>
           <h1 className={styles.title}>
             {isUz ? 'Kolleksiyalar va obrazlar' : 'Коллекции и образы'}
           </h1>
           <p className={styles.subtitle}>
             {isUz
-              ? "Simpaty kollektsiyalari mavsum, kayfiyat va turmush tarziga qarab tuziladi. Har bir yo‘nalish o‘ziga xos rang va siluetlarga ega."
-              : 'Коллекции Simpaty формируются по сезонам, настроению и образу жизни. Каждое направление имеет свою палитру и характер силуэтов.'}
+              ? "Lili kollektsiyalari mavsum, kayfiyat va turmush tarziga qarab tuziladi. Har bir yo‘nalish o‘ziga xos rang va siluetlarga ega."
+              : 'Коллекции Lili формируются по сезонам, настроению и образу жизни. Каждое направление имеет свою палитру и характер силуэтов.'}
           </p>
           <div className={styles.divider} />
         </header>
@@ -68,4 +68,3 @@ export default function CollectionsPage() {
     </main>
   )
 }
-

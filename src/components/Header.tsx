@@ -32,11 +32,11 @@ export function Header() {
         <Link
           href="/"
           className={styles.logo}
-          aria-label="Simpaty"
+          aria-label="Lili"
         >
           <img
-            src="/logo-simpaty.svg"
-            alt="Simpaty"
+            src="/logo-lili.svg"
+            alt="Lili"
             width={140}
             height={36}
             className={styles.logoImage}

@@ -15,8 +15,8 @@ export function PageLoader() {
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       >
         <Image 
-          src="/logo-simpaty.svg" 
-          alt="Simpaty" 
+          src="/logo-lili.svg"
+          alt="Lili"
           width={180} 
           height={46} 
           className={styles.logo}

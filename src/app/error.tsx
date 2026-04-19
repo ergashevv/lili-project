@@ -15,7 +15,7 @@ export default function GlobalError() {
         <main className={styles.page}>
           <div className="container">
             <header className={styles.header}>
-              <div className={styles.eyebrow}>Simpaty</div>
+              <div className={styles.eyebrow}>Lili</div>
               <h1 className={styles.title}>
                 {isUz ? 'Tizim xatosi' : 'Системная ошибка'}
               </h1>
@@ -51,4 +51,3 @@ export default function GlobalError() {
     </html>
   )
 }
-

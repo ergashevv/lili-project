@@ -36,7 +36,7 @@ export default function ReviewsPage() {
     <main className={styles.page}>
       <div className="container">
         <header className={styles.header}>
-          <div className={styles.eyebrow}>Simpaty</div>
+          <div className={styles.eyebrow}>Lili</div>
           <h1 className={styles.title}>
             {isUz ? 'Mijozlar fikrlari' : 'Отзывы клиентов'}
           </h1>
@@ -67,8 +67,8 @@ export default function ReviewsPage() {
               </h2>
               <p className={styles.text}>
                 {isUz
-                  ? "Agar siz allaqachon Simpaty liboslarini xarid qilgan bo‘lsangiz, bizga Telegram yoki Instagram orqali fikringizni yuborishingiz mumkin."
-                  : 'Если вы уже приобретали одежду Simpaty, вы можете отправить свой отзыв через Telegram или Instagram.'}
+                  ? "Agar siz allaqachon Lili liboslarini xarid qilgan bo‘lsangiz, bizga Telegram yoki Instagram orqali fikringizni yuborishingiz mumkin."
+                  : 'Если вы уже приобретали одежду Lili, вы можете отправить свой отзыв через Telegram или Instagram.'}
               </p>
               <p className={`${styles.text} ${styles.muted}`}>
                 {isUz
@@ -82,4 +82,3 @@ export default function ReviewsPage() {
     </main>
   )
 }
-

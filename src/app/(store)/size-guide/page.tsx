@@ -12,7 +12,7 @@ export default function SizeGuidePage() {
     <main className={styles.page}>
       <div className="container">
         <header className={styles.header}>
-          <div className={styles.eyebrow}>Simpaty</div>
+          <div className={styles.eyebrow}>Lili</div>
           <h1 className={styles.title}>
             {isUz ? "O‘lchamlar jadvali" : 'Размерная сетка'}
           </h1>
@@ -61,8 +61,8 @@ export default function SizeGuidePage() {
                 </h2>
                 <p className={styles.text}>
                   {isUz
-                    ? "Simpaty kolleksiyalarida o‘lchamlar asosan S, M, L, XL diapazonida. Har bir model uchun aniq o‘lcham bo‘yicha menejerlarimiz qo‘shimcha tavsiya berishi mumkin."
-                    : 'В коллекциях Simpaty размеры, как правило, представлены в диапазоне S, M, L, XL. По каждому изделию менеджер может подсказать, если модель маломерит или полномерная.'}
+                    ? "Lili kolleksiyalarida o‘lchamlar asosan S, M, L, XL diapazonida. Har bir model uchun aniq o‘lcham bo‘yicha menejerlarimiz qo‘shimcha tavsiya berishi mumkin."
+                    : 'В коллекциях Lili размеры, как правило, представлены в диапазоне S, M, L, XL. По каждому изделию менеджер может подсказать, если модель маломерит или полномерная.'}
                 </p>
               </div>
             </div>
@@ -95,4 +95,3 @@ export default function SizeGuidePage() {
     </main>
   )
 }
-

@@ -24,21 +24,21 @@ export async function generateMetadata({
 
   if (!category) {
     return {
-      title: 'Категория не найдена | Simpaty',
-      description: 'Запрошенная категория не найдена в каталоге Simpaty.',
+      title: 'Kategorija topilmadi | Lili',
+      description: 'So‘ralgan kategoriya Lili katalogida topilmadi.',
     }
   }
 
   const titleRu = category.nameRu || category.nameUz
   const description =
-    `Simpaty — категория «${titleRu}» с премиальной женской одеждой в Узбекистане. ` +
-    'Выберите образ для особых случаев и на каждый diyan.'
+    `Lili — «${titleRu}» kategoriyasi bo‘yicha O‘zbekistondagi premium ayollar kiyimi. ` +
+    'Maxsus holatlar va kundalik obrazlar uchun mos variantlarni tanlang.'
 
   return {
-    title: `${titleRu} | Simpaty`,
+    title: `${titleRu} | Lili`,
     description,
     openGraph: {
-      title: `${titleRu} | Simpaty`,
+      title: `${titleRu} | Lili`,
       description,
       images: category.imageUrl
         ? [
@@ -159,4 +159,3 @@ export default async function CategoryPage({
     </div>
   )
 }
-

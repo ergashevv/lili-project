@@ -42,7 +42,7 @@ export default function SignupPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <Link href="/" className={styles.logo}>SIMPATY</Link>
+        <Link href="/" className={styles.logo}>LILI</Link>
         <h1 className={styles.title}>{t('auth.signup.title')}</h1>
         <p className={styles.subtitle}>{t('auth.signup.subtitle')}</p>
 

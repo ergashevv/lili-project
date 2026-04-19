@@ -1,4 +1,4 @@
-# Simpaty - Ayollar Kiyimi E-commerce
+# Lili - Ayollar Kiyimi E-commerce
 
 Ushbu loyiha Vercel'ga moslangan va to'liq full stack usulida (Next.js 15, Prisma ORM, Vercel Blob) yaratilgan.
 

@@ -12,14 +12,14 @@ export default function PrivacyPolicyPage() {
     <main className={styles.page}>
       <div className="container">
         <header className={styles.header}>
-          <div className={styles.eyebrow}>Simpaty</div>
+          <div className={styles.eyebrow}>Lili</div>
           <h1 className={styles.title}>
             {isUz ? 'Maxfiylik siyosati' : 'Политика конфиденциальности'}
           </h1>
           <p className={styles.subtitle}>
             {isUz
-              ? "Ushbu sahifada Simpaty foydalanuvchi maʼlumotlarini qanday yig‘ishi va himoya qilishi haqida maʼlumot beriladi."
-              : 'На этой странице описано, как Simpaty собирает и защищает персональные данные пользователей.'}
+              ? "Ushbu sahifada Lili foydalanuvchi maʼlumotlarini qanday yig‘ishi va himoya qilishi haqida maʼlumot beriladi."
+              : 'На этой странице описано, как Lili собирает и защищает персональные данные пользователей.'}
           </p>
           <div className={styles.divider} />
         </header>
@@ -62,4 +62,3 @@ export default function PrivacyPolicyPage() {
     </main>
   )
 }
-

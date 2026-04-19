@@ -12,14 +12,14 @@ export default function AboutPage() {
     <main className={styles.page}>
       <div className="container">
         <header className={styles.header}>
-          <div className={styles.eyebrow}>Simpaty</div>
+          <div className={styles.eyebrow}>Lili</div>
           <h1 className={styles.title}>
-            {isUz ? 'Brend haqida' : 'О бренде Simpaty'}
+            {isUz ? 'Brend haqida' : 'О бренде Lili'}
           </h1>
           <p className={styles.subtitle}>
             {isUz
-              ? 'Simpaty — nafislik va ishonch uyg‘unligi. Biz har bir libos orqali ayolning ichki kuchi va individualligini ochishga intilamiz.'
-              : 'Simpaty — это сочетание утончённости и уверенности. В каждом изделии мы стремимся подчеркнуть внутреннюю силу и индивидуальность женщины.'}
+              ? 'Lili — nafislik va ishonch uyg‘unligi. Biz har bir libos orqali ayolning ichki kuchi va individualligini ochishga intilamiz.'
+              : 'Lili — это сочетание утончённости и уверенности. В каждом изделии мы стремимся подчеркнуть внутреннюю силу и индивидуальность женщины.'}
           </p>
           <div className={styles.divider} />
         </header>
@@ -33,8 +33,8 @@ export default function AboutPage() {
                 </h2>
                 <p className={styles.text}>
                   {isUz
-                    ? "Simpaty kolleksiyalari zamonaviy shahar ayoli uchun yaratilgan. Biz uchun muhim jihat — libos nafaqat chiroyli ko‘rinishi, balki o‘zini ishonchli, qulay va o‘ziga xos his qilishidir."
-                    : 'Коллекции Simpaty созданы для современной городской женщины. Для нас важно, чтобы одежда не только красиво смотрелась, но и дарила ощущение уверенности, комфорта и собственной уникальности.'}
+                    ? "Lili kolleksiyalari zamonaviy shahar ayoli uchun yaratilgan. Biz uchun muhim jihat — libos nafaqat chiroyli ko‘rinishi, balki o‘zini ishonchli, qulay va o‘ziga xos his qilishidir."
+                    : 'Коллекции Lili созданы для современной городской женщины. Для нас важно, чтобы одежда не только красиво смотрелась, но и дарила ощущение уверенности, комфорта и собственной уникальности.'}
                 </p>
               </div>
 
@@ -56,8 +56,8 @@ export default function AboutPage() {
               </h2>
               <p className={styles.text}>
                 {isUz
-                  ? 'Simpaty liboslari quyidagi holatlar uchun ideal tanlov bo‘la oladi:'
-                  : 'Образы Simpaty идеально подходят для следующих случаев:'}
+                  ? 'Lili liboslari quyidagi holatlar uchun ideal tanlov bo‘la oladi:'
+                  : 'Образы Lili идеально подходят для следующих случаев:'}
               </p>
               <ul className={styles.list}>
                 <li className={styles.listItem}>
@@ -92,4 +92,3 @@ export default function AboutPage() {
     </main>
   )
 }
-

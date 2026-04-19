@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 
-const siteUrl = 'https://www.simpatiya.uz'
+const siteUrl = 'https://www.lili.uz'
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -11,4 +11,3 @@ export default function robots(): MetadataRoute.Robots {
     sitemap: `${siteUrl}/sitemap.xml`,
   }
 }
-
