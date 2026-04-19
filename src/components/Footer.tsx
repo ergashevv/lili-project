@@ -76,6 +76,11 @@ export function Footer() {
                   FAQ
                 </Link>
               </li>
+              <li className={styles.linkItem}>
+                <Link href="/brand-intake" className={styles.link}>
+                  {isUz ? 'Loyihani boshlash' : 'Начать проект'}
+                </Link>
+              </li>
             </ul>
           </div>
 
