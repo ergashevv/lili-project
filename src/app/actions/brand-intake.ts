@@ -1,7 +1,12 @@
 'use server'
 
 import { createBrandIntakeEntry } from '@/lib/brand-intake-store'
-import { normalizeWebsiteInput, validateBrandIntakeField } from '@/lib/brand-intake-validation'
+import {
+  getBrandIntakeFixHighlightedFieldsMessage,
+  normalizeWebsiteInput,
+  validateBrandIntakeField,
+} from '@/lib/brand-intake-validation'
+import { normalizeBrandIntakeLanguage } from '@/lib/brand-intake-types'
 import { revalidatePath } from 'next/cache'
 
 type SaveBrandIntakeResult = {
@@ -25,24 +30,25 @@ function readText(formData: FormData, key: string) {
 }
 
 export async function saveBrandIntake(formData: FormData): Promise<SaveBrandIntakeResult> {
+  const language = normalizeBrandIntakeLanguage(readText(formData, 'language'))
   const brandName = readText(formData, 'brandName')
   const contactName = readText(formData, 'contactName')
   const email = readText(formData, 'email')
   const websiteInput = readText(formData, 'website')
 
   const requiredErrors = [
-    validateBrandIntakeField('brandName', brandName),
-    validateBrandIntakeField('contactName', contactName),
-    validateBrandIntakeField('email', email),
-    validateBrandIntakeField('website', websiteInput),
-    validateBrandIntakeField('requiredPages', readText(formData, 'requiredPages')),
-    validateBrandIntakeField('primaryColor', readText(formData, 'primaryColor')),
-    validateBrandIntakeField('secondaryColor', readText(formData, 'secondaryColor')),
-    validateBrandIntakeField('accentColor', readText(formData, 'accentColor')),
+    validateBrandIntakeField('brandName', brandName, language),
+    validateBrandIntakeField('contactName', contactName, language),
+    validateBrandIntakeField('email', email, language),
+    validateBrandIntakeField('website', websiteInput, language),
+    validateBrandIntakeField('requiredPages', readText(formData, 'requiredPages'), language),
+    validateBrandIntakeField('primaryColor', readText(formData, 'primaryColor'), language),
+    validateBrandIntakeField('secondaryColor', readText(formData, 'secondaryColor'), language),
+    validateBrandIntakeField('accentColor', readText(formData, 'accentColor'), language),
   ].filter(Boolean)
 
   if (requiredErrors.length > 0) {
-    return { success: false, error: 'Please fix the highlighted fields and try again.' }
+    return { success: false, error: getBrandIntakeFixHighlightedFieldsMessage(language) }
   }
 
   const phone = readText(formData, 'phone')

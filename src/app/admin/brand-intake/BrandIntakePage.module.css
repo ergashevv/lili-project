@@ -54,6 +54,70 @@
   border: 1px solid rgba(128, 0, 32, 0.08);
 }
 
+.heroTop {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 18px;
+  align-items: start;
+  margin-top: 6px;
+}
+
+.languageSwitcher {
+  padding: 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(128, 0, 32, 0.1);
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 10px 24px rgba(28, 15, 21, 0.04);
+}
+
+.languageLabel {
+  display: block;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.languageButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.languageButton {
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid #e3d6d1;
+  background: #fff;
+  color: #4f3d46;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.languageButton:hover {
+  transform: translateY(-1px);
+  border-color: rgba(128, 0, 32, 0.25);
+  box-shadow: 0 8px 16px rgba(28, 15, 21, 0.06);
+}
+
+.languageButtonActive {
+  background: linear-gradient(135deg, var(--primary-color), #5a0018);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(128, 0, 32, 0.22);
+}
+
+.languageHint {
+  margin: 10px 0 0;
+  color: #6d5a63;
+  line-height: 1.55;
+  font-size: 0.9rem;
+}
+
 .heroGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -431,6 +495,7 @@
 }
 
 @media (max-width: 820px) {
+  .heroTop,
   .heroGrid,
   .fieldStack {
     grid-template-columns: 1fr;
@@ -455,6 +520,10 @@
   .hero {
     padding: 20px;
     border-radius: 22px;
+  }
+
+  .languageSwitcher {
+    padding: 14px;
   }
 
   .sectionCard,

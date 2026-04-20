@@ -5,6 +5,14 @@ import { useRouter } from 'next/navigation'
 import { saveBrandIntake } from '@/app/actions/brand-intake'
 import {
   BRAND_INTAKE_DEFAULTS,
+  type BrandIntakeLanguage,
+  normalizeBrandIntakeLanguage,
+} from '@/lib/brand-intake-types'
+import {
+  BRAND_INTAKE_COPY,
+  formatBrandIntakeFilledSummary,
+} from '@/lib/brand-intake-content'
+import {
   createBrandIntakeDraft,
   validateBrandIntakeField,
   validateBrandIntakeForm,
@@ -30,130 +38,6 @@ type FieldGroup = {
   fields: Field[]
 }
 
-const FIELD_GROUPS: FieldGroup[] = [
-  {
-    title: 'Brand basics',
-    description: 'Who the brand is and who we should contact.',
-    fields: [
-      {
-        name: 'brandName',
-        label: 'Brand name',
-        helper: 'This is the name that will appear in the header, logo, and footer.',
-        placeholder: 'Lili',
-        required: true,
-      },
-      {
-        name: 'contactName',
-        label: 'Contact person',
-        helper: 'The person we should speak with while building the site.',
-        placeholder: 'Full name',
-        required: true,
-      },
-      {
-        name: 'email',
-        label: 'Email address',
-        helper: 'We will use this for follow-up and project updates.',
-        placeholder: 'name@example.com',
-        type: 'email',
-        required: true,
-      },
-      {
-        name: 'phone',
-        label: 'Phone / WhatsApp',
-        helper: 'Optional, but helpful for faster communication.',
-        placeholder: '+998 90 000 00 00',
-      },
-      {
-        name: 'website',
-        label: 'Website / domain',
-        helper: 'Type the domain only, like lili.uz, or paste the full URL.',
-        placeholder: 'lili.uz',
-        required: true,
-      },
-    ],
-  },
-  {
-    title: 'Site pages',
-    description: 'Tell us which pages should exist on the website.',
-    fields: [
-      {
-        name: 'requiredPages',
-        label: 'Pages to include',
-        helper: 'Separate pages with commas or one page per line.',
-        placeholder: 'Home, About, Shop, FAQ, Contact',
-        kind: 'textarea',
-        rows: 5,
-        required: true,
-      },
-    ],
-  },
-  {
-    title: 'Brand style',
-    description: 'Pick colors and describe the look you want.',
-    fields: [
-      {
-        name: 'primaryColor',
-        label: 'Main color',
-        helper: 'This color will be used for buttons, links, and highlights.',
-        type: 'color',
-        required: true,
-      },
-      {
-        name: 'secondaryColor',
-        label: 'Support color',
-        helper: 'A second color for cards, borders, and softer accents.',
-        type: 'color',
-        required: true,
-      },
-      {
-        name: 'accentColor',
-        label: 'Accent color',
-        helper: 'A small accent color for badges and details.',
-        type: 'color',
-        required: true,
-      },
-      {
-        name: 'typography',
-        label: 'Font style',
-        helper: 'Describe the font mood you want: modern, elegant, serif, clean, and so on.',
-        placeholder: 'Modern, elegant, readable...',
-        kind: 'textarea',
-        rows: 4,
-      },
-      {
-        name: 'preferredTone',
-        label: 'Text style',
-        helper: 'How should the website sound? Friendly, premium, simple, bold, and so on.',
-        placeholder: 'Warm, premium, clear...',
-        kind: 'textarea',
-        rows: 4,
-      },
-    ],
-  },
-  {
-    title: 'Links and notes',
-    description: 'Share any social profiles and extra instructions.',
-    fields: [
-      {
-        name: 'socialLinks',
-        label: 'Social links',
-        helper: 'Instagram, Telegram, TikTok, or any other profile names or links.',
-        placeholder: 'Instagram, Telegram, TikTok...',
-        kind: 'textarea',
-        rows: 4,
-      },
-      {
-        name: 'notes',
-        label: 'Extra notes',
-        helper: 'Anything else we should know before we start.',
-        placeholder: 'Optional notes for the team',
-        kind: 'textarea',
-        rows: 4,
-      },
-    ],
-  },
-]
-
 const REQUIRED_FIELDS = ['brandName', 'contactName', 'email', 'website', 'requiredPages'] as const
 
 function joinDescribedBy(...ids: Array<string | undefined>) {
@@ -164,21 +48,29 @@ function getRequiredFilledCount(draft: Record<string, string>) {
   return REQUIRED_FIELDS.filter((name) => draft[name]?.trim().length > 0).length
 }
 
-export function BrandIntakeForm(props: BrandIntakeFormViewProps) {
-  return <BrandIntakeFormView {...props} />
-}
-
 interface BrandIntakeFormViewProps {
+  language?: BrandIntakeLanguage
   submitLabel?: string
   successMessage?: string
   errorMessage?: string
 }
 
+export function BrandIntakeForm(props: BrandIntakeFormViewProps) {
+  return <BrandIntakeFormView {...props} />
+}
+
 function BrandIntakeFormView({
-  submitLabel = 'Submit brand intake',
-  successMessage = 'Thanks. Your brand intake has been saved to the dashboard.',
-  errorMessage = 'Could not save the form. Please try again.',
+  language = 'en',
+  submitLabel,
+  successMessage,
+  errorMessage,
 }: BrandIntakeFormViewProps) {
+  const selectedLanguage = normalizeBrandIntakeLanguage(language)
+  const copy = BRAND_INTAKE_COPY[selectedLanguage]
+  const resolvedSubmitLabel = submitLabel ?? copy.form.submitLabel
+  const resolvedSuccessMessage = successMessage ?? copy.form.successMessage
+  const resolvedErrorMessage = errorMessage ?? copy.form.errorMessage
+
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [status, setStatus] = React.useState<'idle' | 'success' | 'error'>('idle')
@@ -188,7 +80,26 @@ function BrandIntakeFormView({
   const [touched, setTouched] = React.useState<Record<string, boolean>>({})
   const [errors, setErrors] = React.useState<Record<string, string>>({})
 
+  const draftRef = React.useRef(draft)
+  const statusRef = React.useRef(status)
+
+  draftRef.current = draft
+  statusRef.current = status
+
   const requiredFilled = getRequiredFilledCount(draft)
+  const fieldGroups = copy.form.groups as FieldGroup[]
+
+  React.useEffect(() => {
+    setErrors(validateBrandIntakeForm(draftRef.current, selectedLanguage))
+
+    if (statusRef.current === 'success') {
+      setMessage(resolvedSuccessMessage)
+    }
+
+    if (statusRef.current === 'error') {
+      setMessage(resolvedErrorMessage)
+    }
+  }, [resolvedErrorMessage, resolvedSuccessMessage, selectedLanguage])
 
   const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.currentTarget
@@ -196,7 +107,7 @@ function BrandIntakeFormView({
     setTouched((current) => ({ ...current, [name]: true }))
     setErrors((current) => ({
       ...current,
-      [name]: validateBrandIntakeField(name, value),
+      [name]: validateBrandIntakeField(name, value, selectedLanguage),
     }))
   }
 
@@ -205,7 +116,7 @@ function BrandIntakeFormView({
     setTouched((current) => ({ ...current, [name]: true }))
     setErrors((current) => ({
       ...current,
-      [name]: validateBrandIntakeField(name, value),
+      [name]: validateBrandIntakeField(name, value, selectedLanguage),
     }))
   }
 
@@ -215,10 +126,10 @@ function BrandIntakeFormView({
     setStatus('idle')
     setMessage('')
 
-    const validationErrors = validateBrandIntakeForm(draft)
+    const validationErrors = validateBrandIntakeForm(draft, selectedLanguage)
     setErrors(validationErrors)
     setTouched(
-      FIELD_GROUPS.reduce<Record<string, boolean>>((accumulator, group) => {
+      fieldGroups.reduce<Record<string, boolean>>((accumulator, group) => {
         group.fields.forEach((field) => {
           accumulator[field.name] = true
         })
@@ -229,7 +140,7 @@ function BrandIntakeFormView({
 
     if (Object.keys(validationErrors).length > 0) {
       setStatus('error')
-      setMessage('Please fix the highlighted fields and try again.')
+      setMessage(resolvedErrorMessage)
       setIsSubmitting(false)
       return
     }
@@ -240,7 +151,7 @@ function BrandIntakeFormView({
       const result = await saveBrandIntake(formData)
       if (!result.success) {
         setStatus('error')
-        setMessage(result.error || errorMessage)
+        setMessage(result.error || resolvedErrorMessage)
         return
       }
 
@@ -250,10 +161,10 @@ function BrandIntakeFormView({
       setSubmitAttempted(false)
       router.refresh()
       setStatus('success')
-      setMessage(successMessage)
+      setMessage(resolvedSuccessMessage)
     } catch {
       setStatus('error')
-      setMessage(errorMessage)
+      setMessage(resolvedErrorMessage)
     } finally {
       setIsSubmitting(false)
     }
@@ -314,7 +225,7 @@ function BrandIntakeFormView({
             />
             <div className={styles.colorMeta}>
               <strong>{field.label}</strong>
-              <span>Pick the color visually. No code needed.</span>
+              <span>{copy.form.colorPickerNote}</span>
               <div className={styles.colorSwatchLine}>
                 <span className={styles.colorSwatch} style={{ backgroundColor: value }} />
                 <small>{value.toUpperCase()}</small>
@@ -349,7 +260,9 @@ function BrandIntakeFormView({
 
   return (
     <form className={styles.form} onSubmit={handleSubmit} noValidate>
-      {FIELD_GROUPS.map((group) => (
+      <input type="hidden" name="language" value={selectedLanguage} />
+
+      {fieldGroups.map((group) => (
         <section key={group.title} className={styles.sectionCard}>
           <div className={styles.sectionHeader}>
             <div>
@@ -364,15 +277,15 @@ function BrandIntakeFormView({
 
       <div className={styles.submitBar}>
         <div className={styles.submitCopy}>
-          <span>Ready to save</span>
+          <span>{copy.form.readyLabel}</span>
           <strong>
-            {requiredFilled} of {REQUIRED_FIELDS.length} essentials filled
+            {formatBrandIntakeFilledSummary(selectedLanguage, requiredFilled, REQUIRED_FIELDS.length)}
           </strong>
-          <p>The form stays simple. Fill only what you know and submit.</p>
+          <p>{copy.form.guidance}</p>
         </div>
 
         <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
-          {isSubmitting ? 'Saving...' : submitLabel}
+          {isSubmitting ? copy.form.savingLabel : resolvedSubmitLabel}
         </button>
       </div>
 

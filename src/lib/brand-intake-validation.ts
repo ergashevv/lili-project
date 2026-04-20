@@ -1,35 +1,74 @@
-export const BRAND_INTAKE_DEFAULTS = {
-  primaryColor: '#800020',
-  secondaryColor: '#d4af37',
-  accentColor: '#f8f1ea',
+import {
+  BRAND_INTAKE_DEFAULTS,
+  BRAND_INTAKE_FIELD_NAMES,
+  type BrandIntakeFieldName,
+  type BrandIntakeLanguage,
+} from './brand-intake-types'
+
+const VALIDATION_MESSAGES: Record<
+  BrandIntakeLanguage,
+  {
+    brandNameRequired: string
+    contactNameRequired: string
+    emailRequired: string
+    emailInvalid: string
+    phoneInvalid: string
+    websiteRequired: string
+    websiteInvalid: string
+    requiredPagesRequired: string
+    colorInvalid: string
+    fixHighlightedFields: string
+  }
+> = {
+  uz: {
+    brandNameRequired: 'Brand nomi majburiy.',
+    contactNameRequired: 'Aloqa qilinadigan shaxs majburiy.',
+    emailRequired: 'Email manzil majburiy.',
+    emailInvalid: 'name@example.com ko‘rinishida kiriting.',
+    phoneInvalid: 'Telefon raqamini to‘g‘ri kiriting.',
+    websiteRequired: 'Website domain majburiy.',
+    websiteInvalid: 'lili.uz yoki https://lili.uz ko‘rinishida kiriting.',
+    requiredPagesRequired: 'Saytga kerak bo‘lgan sahifalarni kiriting.',
+    colorInvalid: 'Rangni palitradan tanlang.',
+    fixHighlightedFields: 'Belgilangan maydonlarni to‘g‘rilab qayta urinib ko‘ring.',
+  },
+  ru: {
+    brandNameRequired: 'Название бренда обязательно.',
+    contactNameRequired: 'Контактное лицо обязательно.',
+    emailRequired: 'Email обязателен.',
+    emailInvalid: 'Введите адрес в формате name@example.com.',
+    phoneInvalid: 'Введите корректный номер телефона.',
+    websiteRequired: 'Website / domain обязателен.',
+    websiteInvalid: 'Введите в формате lili.uz или https://lili.uz.',
+    requiredPagesRequired: 'Укажите нужные страницы сайта.',
+    colorInvalid: 'Выберите цвет из палитры.',
+    fixHighlightedFields: 'Исправьте выделенные поля и попробуйте еще раз.',
+  },
+  en: {
+    brandNameRequired: 'Brand name is required.',
+    contactNameRequired: 'Contact person is required.',
+    emailRequired: 'Email address is required.',
+    emailInvalid: 'Enter a valid email like name@example.com.',
+    phoneInvalid: 'Enter a valid phone number.',
+    websiteRequired: 'Website domain is required.',
+    websiteInvalid: 'Use a domain like lili.uz or a full URL like https://lili.uz.',
+    requiredPagesRequired: 'Add the pages you want on the site.',
+    colorInvalid: 'Choose a color from the picker.',
+    fixHighlightedFields: 'Please fix the highlighted fields and try again.',
+  },
 }
 
-export const BRAND_INTAKE_FIELD_NAMES = [
-  'brandName',
-  'contactName',
-  'email',
-  'phone',
-  'website',
-  'requiredPages',
-  'primaryColor',
-  'secondaryColor',
-  'accentColor',
-  'typography',
-  'preferredTone',
-  'socialLinks',
-  'notes',
-] as const
+function getMessages(language: BrandIntakeLanguage) {
+  return VALIDATION_MESSAGES[language]
+}
 
 export function createBrandIntakeDraft() {
-  return BRAND_INTAKE_FIELD_NAMES.reduce<Record<string, string>>(
-    (draft, name) => {
-      draft[name] = Object.hasOwn(BRAND_INTAKE_DEFAULTS, name)
-        ? BRAND_INTAKE_DEFAULTS[name as keyof typeof BRAND_INTAKE_DEFAULTS]
-        : ''
-      return draft
-    },
-    {},
-  )
+  return BRAND_INTAKE_FIELD_NAMES.reduce<Record<string, string>>((draft, name) => {
+    draft[name] = Object.hasOwn(BRAND_INTAKE_DEFAULTS, name)
+      ? BRAND_INTAKE_DEFAULTS[name as keyof typeof BRAND_INTAKE_DEFAULTS]
+      : ''
+    return draft
+  }, {})
 }
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -68,56 +107,61 @@ function isValidColor(value: string) {
   return COLOR_PATTERN.test(value.trim())
 }
 
-export function validateBrandIntakeField(name: string, value: string) {
+export function validateBrandIntakeField(
+  name: BrandIntakeFieldName | string,
+  value: string,
+  language: BrandIntakeLanguage = 'en',
+) {
   const trimmed = value.trim()
+  const messages = getMessages(language)
 
   if (name === 'brandName') {
-    if (!isNonEmpty(trimmed)) return 'Brand name is required.'
+    if (!isNonEmpty(trimmed)) return messages.brandNameRequired
     return ''
   }
 
   if (name === 'contactName') {
-    if (!isNonEmpty(trimmed)) return 'Contact person is required.'
+    if (!isNonEmpty(trimmed)) return messages.contactNameRequired
     return ''
   }
 
   if (name === 'email') {
-    if (!isNonEmpty(trimmed)) return 'Email address is required.'
-    if (!isValidEmail(trimmed)) return 'Enter a valid email like name@example.com.'
+    if (!isNonEmpty(trimmed)) return messages.emailRequired
+    if (!isValidEmail(trimmed)) return messages.emailInvalid
     return ''
   }
 
   if (name === 'phone') {
-    if (!isValidPhone(trimmed)) return 'Enter a valid phone number.'
+    if (!isValidPhone(trimmed)) return messages.phoneInvalid
     return ''
   }
 
   if (name === 'website') {
-    if (!isNonEmpty(trimmed)) return 'Website domain is required.'
+    if (!isNonEmpty(trimmed)) return messages.websiteRequired
     if (!isValidWebsite(trimmed)) {
-      return 'Use a domain like lili.uz or a full URL like https://lili.uz.'
+      return messages.websiteInvalid
     }
     return ''
   }
 
   if (name === 'requiredPages') {
-    if (!isNonEmpty(trimmed)) return 'Add the pages you want on the site.'
+    if (!isNonEmpty(trimmed)) return messages.requiredPagesRequired
     return ''
   }
 
   if (name === 'primaryColor' || name === 'secondaryColor' || name === 'accentColor') {
-    if (!isValidColor(trimmed)) return 'Choose a color from the picker.'
+    if (!isValidColor(trimmed)) return messages.colorInvalid
     return ''
   }
 
   return ''
 }
 
-export function validateBrandIntakeForm(values: Record<string, string>) {
+export function validateBrandIntakeForm(values: Record<string, string>, language: BrandIntakeLanguage = 'en') {
   const errors: Record<string, string> = {}
 
   BRAND_INTAKE_FIELD_NAMES.forEach((name) => {
-    const error = validateBrandIntakeField(name, values[name] || '')
+    const error = validateBrandIntakeField(name, values[name] || '', language)
     if (error) errors[name] = error
   })
 
@@ -129,4 +173,8 @@ export function normalizeWebsiteInput(value: string) {
   if (!trimmed) return ''
   if (/^https?:\/\//i.test(trimmed)) return trimmed
   return `https://${trimmed}`
+}
+
+export function getBrandIntakeFixHighlightedFieldsMessage(language: BrandIntakeLanguage) {
+  return getMessages(language).fixHighlightedFields
 }
